@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Radio, MessageSquare, Map, Network, Shield, ShieldCheck } from 'lucide-react'
 import SignalFeed from '@/components/signal-feed'
 import SalesAssist from '@/components/sales-assist'
@@ -38,6 +39,14 @@ export default function Dashboard() {
       <header className="sticky top-0 z-50 border-b border-tines bg-[#111827]/95 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
+            <Image
+              src="/tines-logo.png"
+              alt="Tines"
+              width={32}
+              height={32}
+              className="rounded-lg"
+              priority
+            />
             <div>
               <h1 className="text-lg font-bold tracking-tight">Tines Lead Intel</h1>
               <p className="text-xs text-slate-400">Pre-Interview Account Intelligence</p>
