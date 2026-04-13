@@ -10,12 +10,11 @@ import KnowledgeGraph from '@/components/knowledge-graph'
 /* ── Inline Tines logo mark (no external dependency) ── */
 function TinesLogo() {
   return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="flex-shrink-0">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
       <circle cx="16" cy="16" r="16" fill="#7C5CFC"/>
-      <path d="M10.5 12.5C10.5 10.84 11.84 9.5 13.5 9.5h5c1.66 0 3 1.34 3 3v1h-11v-1z" fill="white"/>
-      <rect x="10.5" y="14" width="11" height="2" rx="0.5" fill="white" fillOpacity="0.9"/>
-      <rect x="10.5" y="17" width="11" height="2" rx="0.5" fill="white" fillOpacity="0.9"/>
-      <path d="M10.5 19.5h11v1c0 1.66-1.34 3-3 3h-5c-1.66 0-3-1.34-3-3v-1z" fill="white" fillOpacity="0.8"/>
+      <rect x="8" y="10" width="16" height="2.5" rx="1.25" fill="white"/>
+      <rect x="8" y="15" width="16" height="2.5" rx="1.25" fill="white"/>
+      <rect x="8" y="20" width="16" height="2.5" rx="1.25" fill="white"/>
     </svg>
   )
 }
