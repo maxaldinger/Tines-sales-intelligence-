@@ -1,0 +1,74 @@
+import { NextResponse } from 'next/server';
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+const TINES_CONTEXT = `== YOUR COMPANY CONTEXT ==
+Company: Tines
+Description: Tines is the leading no-code security automation platform. It enables security teams to automate any workflow — from alert triage to incident response to compliance — without writing code and with no per-action pricing.
+Products/Services:
+- Tines Stories: Visual, no-code workflow builder for security automation
+- Tines Cases: Built-in case management for security teams
+- Tines Pages: Custom forms and portals for intake, approvals, and self-service
+- AI Actions: LLM-powered steps integrated natively into workflows
+- Tines API: Full REST API for programmatic workflow management
+Key Differentiators: Only security automation platform with true no-code (not low-code), no per-action pricing (unlimited runs), vendor-agnostic integrations (works with any API), SOC2 Type II certified, used by top security teams at Snowflake, Canva, Databricks, Mars, McKesson.
+Target Industries: Financial Services, Healthcare, Technology, Government/Defense, Critical Infrastructure
+ICP: Enterprises (1000+ employees) with mature security teams, SIEM/EDR/ITSM tool stacks, and manual triage or response processes
+Competitors: Splunk SOAR (complex, requires scripting), Palo Alto XSOAR (expensive, vendor lock-in), Torq (newer, less proven), Swimlane (complex low-code), ServiceNow SecOps (heavy IT overhead)
+Common Objections: "We already have a SOAR" → Tines replaces legacy SOAR with true no-code and unlimited runs. "Our team can script it" → No-code means non-engineers can build and maintain, reducing key-person risk. "We're evaluating ServiceNow" → Tines is purpose-built for security, not a bolt-on to ITSM.
+== END CONTEXT ==`;
+
+const TOOL_PROMPTS: Record<string, string> = {
+  email: 'You are an expert sales email writer for cybersecurity automation. You craft compelling, personalized outreach and follow-up emails that drive engagement with security leaders.',
+  lou: 'You are an expert LOU (Letter of Understanding) writer. You help sales reps create professional, structured letters of understanding from discovery calls.',
+  pricebook: 'You are a pricing proposals expert for security automation software. You help construct compelling pricing proposals that justify the investment vs. manual SOC operations.',
+  objections: 'You are an objection handling expert for security automation sales. You use the Validate → Reframe → Proof → Close framework.',
+  threading: 'You are a multi-threading strategy expert for security automation deals. You help reps engage CISOs, SOC managers, VP Security, and IT directors.',
+  general: 'You are an AI sales engineer and coach specializing in security automation. You help reps with discovery, qualification, demos, proposals, and closing.',
+};
+
+const TONE_PROMPTS: Record<string, string> = {
+  'Direct and confident': 'Write in a direct and confident tone. Be assertive and clear. Get to the point quickly and project authority.',
+  'Consultative and warm': 'Write in a consultative and warm tone. Be approachable and helpful.',
+  'Formal and professional': 'Write in a formal and professional tone. Use proper business language.',
+  'Casual and conversational': 'Write in a casual and conversational tone. Be friendly and relatable.',
+};
+
+const METHODOLOGY_PROMPTS: Record<string, string> = {
+  'MEDDPICC': 'Apply the MEDDPICC sales methodology. Focus on Metrics, Economic Buyer, Decision Criteria, Decision Process, Paper Process, Identify Pain, Champion, and Competition.',
+  'Challenger Sale': 'Apply the Challenger Sale methodology. Teach, Tailor, Take Control.',
+  'SPIN Selling': 'Apply SPIN Selling. Situation → Problem → Implication → Need-payoff.',
+  'Solution Selling': 'Apply Solution Selling. Diagnose pain, craft vision, prove value.',
+};
+
+export async function POST(request: Request) {
+  try {
+    const { messages, tool, toneOverride, methodologyOverride } = await request.json();
+    if (!messages || !Array.isArray(messages)) return NextResponse.json({ error: 'messages array is required' }, { status: 400 });
+
+    const toolKey = tool || 'general';
+    const toolPrompt = TOOL_PROMPTS[toolKey] || TOOL_PROMPTS.general;
+    let systemPrompt = `${toolPrompt}\n\n`;
+    if (toneOverride && TONE_PROMPTS[toneOverride]) systemPrompt += `${TONE_PROMPTS[toneOverride]}\n\n`;
+    if (methodologyOverride && METHODOLOGY_PROMPTS[methodologyOverride]) systemPrompt += `${METHODOLOGY_PROMPTS[methodologyOverride]}\n\n`;
+    systemPrompt += `Use the following company context to inform your responses.\n\n${TINES_CONTEXT}`;
+
+    const response = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2000,
+      system: systemPrompt,
+      messages: messages.map((m: { role: string; content: string }) => ({
+        role: m.role as 'user' | 'assistant',
+        content: m.content,
+      })),
+    });
+
+    const textBlock = response.content.find((block) => block.type === 'text');
+    const message = textBlock ? textBlock.text : '';
+    return NextResponse.json({ message });
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: errMsg }, { status: 500 });
+  }
+}
