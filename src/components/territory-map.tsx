@@ -50,7 +50,7 @@ export default function TerritoryMap({ accounts }: { accounts: MapAccount[] }) {
         .bindTooltip(
           `<div style="font-family:ui-sans-serif,system-ui,sans-serif;font-size:12px;line-height:1.5">
             <strong>${a.company}</strong><br/>
-            <span style="color:#94a3b8">${a.hq_city}, ${a.hq_state}</span><br/>
+            <span style="color:#9B8FBF">${a.hq_city}, ${a.hq_state}</span><br/>
             <span style="color:#34d399;font-family:ui-monospace,monospace">${a.est_acv}</span>
           </div>`,
           { direction: 'top', offset: [0, -8], className: 'territory-tooltip' }
@@ -72,19 +72,19 @@ export default function TerritoryMap({ accounts }: { accounts: MapAccount[] }) {
     <>
       <style>{`
         .territory-tooltip {
-          background: #1e293b !important;
-          border: 1px solid rgba(255,255,255,0.15) !important;
+          background: #161224 !important;
+          border: 1px solid #2A2540 !important;
           border-radius: 8px !important;
           padding: 8px 12px !important;
           box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
           color: #fff !important;
         }
         .territory-tooltip::before {
-          border-top-color: #1e293b !important;
+          border-top-color: #161224 !important;
         }
-        .leaflet-container { background: #0a0e1a !important; }
+        .leaflet-container { background: #0F0B1A !important; }
       `}</style>
-      <div ref={ref} className="w-full h-[500px] rounded-xl overflow-hidden border border-white/10" />
+      <div ref={ref} className="w-full h-[500px] rounded-xl overflow-hidden border border-surface-border" />
     </>
   )
 }

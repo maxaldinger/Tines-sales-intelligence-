@@ -85,7 +85,7 @@ export default function SAFollowUpChat({ tool, dealName, contextSummary, placeho
   }
 
   return (
-    <div className="border-t border-white/10 bg-white/[0.02]">
+    <div className="border-t border-surface-border bg-surface-raised">
       {/* Message history */}
       {messages.length > 0 && (
         <div ref={scrollRef} className="max-h-64 overflow-y-auto px-4 py-3 space-y-3">
@@ -97,8 +97,8 @@ export default function SAFollowUpChat({ tool, dealName, contextSummary, placeho
               <div
                 className={`max-w-[80%] px-4 py-2.5 rounded-xl text-sm leading-relaxed whitespace-pre-wrap
                   ${msg.role === 'user'
-                    ? 'bg-cyan-600 text-white'
-                    : 'bg-white/5 border border-white/10 text-slate-300'
+                    ? 'bg-tines text-white'
+                    : 'bg-surface-raised border border-surface-border text-[#C8C0E0]'
                   }`}
               >
                 {msg.content}
@@ -108,11 +108,11 @@ export default function SAFollowUpChat({ tool, dealName, contextSummary, placeho
 
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5">
+              <div className="bg-surface-raised border border-surface-border rounded-xl px-4 py-2.5">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="w-1.5 h-1.5 bg-tines rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 bg-tines rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 bg-tines rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               </div>
             </div>
@@ -130,8 +130,8 @@ export default function SAFollowUpChat({ tool, dealName, contextSummary, placeho
             onKeyDown={handleKeyDown}
             placeholder={placeholder ?? `Ask a follow-up about this ${tool}...`}
             rows={1}
-            className="flex-1 resize-none rounded-lg border border-white/10 bg-white/5 px-3 py-2
-                       text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50
+            className="flex-1 resize-none rounded-lg border border-surface-border bg-surface-raised px-3 py-2
+                       text-sm text-white placeholder-tines-dim focus:outline-none focus:border-tines/40
                        transition-colors"
           />
           <button
@@ -139,7 +139,7 @@ export default function SAFollowUpChat({ tool, dealName, contextSummary, placeho
             onClick={sendMessage}
             disabled={!input.trim() || loading}
             className="flex items-center justify-center w-9 h-9 rounded-lg bg-tines
-                       text-white hover:bg-[#6A4AE0] disabled:opacity-40 disabled:cursor-not-allowed
+                       text-white hover:bg-tines-hover disabled:opacity-40 disabled:cursor-not-allowed
                        transition-colors cursor-pointer"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}

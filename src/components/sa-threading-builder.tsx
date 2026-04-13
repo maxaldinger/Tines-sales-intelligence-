@@ -67,7 +67,7 @@ function getRoleStyle(role: string) {
   for (const [key, val] of Object.entries(ROLE_COLORS)) {
     if (role.toLowerCase().includes(key.toLowerCase())) return val
   }
-  return 'bg-white/5 text-slate-400 border-white/10'
+  return 'bg-surface-raised text-tines-muted border-surface-border'
 }
 
 interface Props {
@@ -133,7 +133,7 @@ export default function SaThreadingBuilder({ dealName }: Props) {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-white mb-1">Multi-Threading Analysis</h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-tines-muted">
           Add your deal contacts to get a threading score, gap analysis, and outreach recommendations.
         </p>
       </div>
@@ -144,14 +144,14 @@ export default function SaThreadingBuilder({ dealName }: Props) {
             {contacts.map((contact, i) => (
               <div
                 key={contact.id}
-                className="p-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-3"
+                className="p-4 rounded-xl bg-surface-raised border border-surface-border space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-slate-500">Contact {i + 1}</span>
+                  <span className="text-xs font-medium text-tines-dim">Contact {i + 1}</span>
                   {contacts.length > 1 && (
                     <button
                       onClick={() => removeContact(contact.id)}
-                      className="p-1 rounded-lg hover:bg-red-500/10 text-slate-500 hover:text-red-400 transition-colors"
+                      className="p-1 rounded-lg hover:bg-red-500/10 text-tines-dim hover:text-red-400 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -162,20 +162,20 @@ export default function SaThreadingBuilder({ dealName }: Props) {
                     value={contact.name}
                     onChange={e => updateContact(contact.id, 'name', e.target.value)}
                     placeholder="Name"
-                    className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm"
+                    className="px-3 py-2 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm"
                   />
                   <input
                     value={contact.title}
                     onChange={e => updateContact(contact.id, 'title', e.target.value)}
                     placeholder="Title"
-                    className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm"
+                    className="px-3 py-2 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm"
                   />
                 </div>
                 <input
                   value={contact.notes}
                   onChange={e => updateContact(contact.id, 'notes', e.target.value)}
                   placeholder="Notes (e.g., met at discovery call, very engaged)"
-                  className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm"
+                  className="w-full px-3 py-2 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm"
                 />
               </div>
             ))}
@@ -184,7 +184,7 @@ export default function SaThreadingBuilder({ dealName }: Props) {
           <div className="flex items-center gap-3">
             <button
               onClick={addContact}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-surface-raised border border-surface-border text-[#C8C0E0] text-sm hover:bg-tines/5 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               Add Contact
@@ -192,7 +192,7 @@ export default function SaThreadingBuilder({ dealName }: Props) {
             <button
               onClick={analyze}
               disabled={loading || contacts.filter(c => c.name.trim()).length === 0}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-[#6A4AE0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-tines-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
@@ -219,13 +219,13 @@ export default function SaThreadingBuilder({ dealName }: Props) {
           {/* Back button */}
           <button
             onClick={() => setMode('input')}
-            className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+            className="px-4 py-2 rounded-xl bg-surface-raised border border-surface-border text-[#C8C0E0] text-sm hover:bg-tines/5 transition-colors"
           >
             Edit Contacts
           </button>
 
           {/* Score card */}
-          <div className="p-6 rounded-xl bg-white/[0.03] border border-white/10">
+          <div className="p-6 rounded-xl bg-surface-raised border border-surface-border">
             <div className="flex items-center gap-8">
               {/* SVG gauge */}
               <div className="relative flex-shrink-0">
@@ -243,7 +243,7 @@ export default function SaThreadingBuilder({ dealName }: Props) {
                     cy="70"
                     r={scoreRadius}
                     fill="none"
-                    stroke={SCORE_STROKE_COLORS[analysis.score_color] || '#06b6d4'}
+                    stroke={SCORE_STROKE_COLORS[analysis.score_color] || '#7C5CFC'}
                     strokeWidth="10"
                     strokeLinecap="round"
                     strokeDasharray={scoreCircumference}
@@ -253,42 +253,42 @@ export default function SaThreadingBuilder({ dealName }: Props) {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className={`text-3xl font-bold ${SCORE_COLORS[analysis.score_color] || 'text-cyan-400'}`}>
+                  <span className={`text-3xl font-bold ${SCORE_COLORS[analysis.score_color] || 'text-tines'}`}>
                     {analysis.score}
                   </span>
-                  <span className="text-xs text-slate-400">{analysis.score_label}</span>
+                  <span className="text-xs text-tines-muted">{analysis.score_label}</span>
                 </div>
               </div>
               <div className="flex-1">
                 <h3 className="text-sm font-semibold text-white mb-2">Threading Score</h3>
-                <p className="text-sm text-slate-300 leading-relaxed">{analysis.summary}</p>
+                <p className="text-sm text-[#C8C0E0] leading-relaxed">{analysis.summary}</p>
               </div>
             </div>
           </div>
 
           {/* Active Contacts */}
           {analysis.contacts.length > 0 && (
-            <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="p-5 rounded-xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle className="w-5 h-5 text-emerald-400" />
                 <h3 className="text-sm font-semibold text-white">Active Contacts ({analysis.contacts.length})</h3>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {analysis.contacts.map((c, i) => (
-                  <div key={i} className="p-3 rounded-lg bg-white/5 border border-white/5">
+                  <div key={i} className="p-3 rounded-lg bg-surface-raised border border-surface-border">
                     <div className="flex items-center gap-2 mb-1.5">
                       <span className="text-sm font-medium text-white">{c.name}</span>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${getRoleStyle(c.role)}`}>
                         {c.role_short || c.role}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400">{c.title}</p>
+                    <p className="text-xs text-tines-muted">{c.title}</p>
                     <div className="flex items-center gap-3 mt-2 text-xs">
-                      <span className="text-slate-500">Influence: <span className="text-slate-300">{c.influence}</span></span>
-                      <span className="text-slate-500">Status: <span className="text-slate-300">{c.status}</span></span>
+                      <span className="text-tines-dim">Influence: <span className="text-[#C8C0E0]">{c.influence}</span></span>
+                      <span className="text-tines-dim">Status: <span className="text-[#C8C0E0]">{c.status}</span></span>
                     </div>
                     {c.assessment && (
-                      <p className="text-xs text-slate-400 mt-1.5 italic">{c.assessment}</p>
+                      <p className="text-xs text-tines-muted mt-1.5 italic">{c.assessment}</p>
                     )}
                   </div>
                 ))}
@@ -298,48 +298,48 @@ export default function SaThreadingBuilder({ dealName }: Props) {
 
           {/* Gaps */}
           {analysis.gaps.length > 0 && (
-            <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="p-5 rounded-xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-4">
                 <AlertTriangle className="w-5 h-5 text-yellow-400" />
                 <h3 className="text-sm font-semibold text-white">Threading Gaps ({analysis.gaps.length})</h3>
               </div>
               <div className="space-y-3">
                 {analysis.gaps.map((gap, i) => (
-                  <div key={i} className="rounded-lg bg-white/5 border border-white/5 overflow-hidden">
+                  <div key={i} className="rounded-lg bg-surface-raised border border-surface-border overflow-hidden">
                     <button
                       onClick={() => setExpandedGap(expandedGap === i ? null : i)}
-                      className="w-full flex items-center gap-3 p-3 text-left hover:bg-white/[0.02] transition-colors"
+                      className="w-full flex items-center gap-3 p-3 text-left hover:bg-surface-raised transition-colors"
                     >
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${getRoleStyle(gap.role)}`}>
                         {gap.role_short || gap.role}
                       </span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white">{gap.role}</p>
-                        <p className="text-xs text-slate-400 truncate">{gap.why_critical}</p>
+                        <p className="text-xs text-tines-muted truncate">{gap.why_critical}</p>
                       </div>
                       {expandedGap === i ? (
-                        <ChevronUp className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                        <ChevronUp className="w-4 h-4 text-tines-dim flex-shrink-0" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                        <ChevronDown className="w-4 h-4 text-tines-dim flex-shrink-0" />
                       )}
                     </button>
                     {expandedGap === i && (
-                      <div className="px-3 pb-3 space-y-3 border-t border-white/5">
+                      <div className="px-3 pb-3 space-y-3 border-t border-surface-border">
                         <div className="pt-3 space-y-2">
                           <div>
-                            <span className="text-xs text-slate-500">Target Title</span>
-                            <p className="text-sm text-slate-300">{gap.target_title}</p>
+                            <span className="text-xs text-tines-dim">Target Title</span>
+                            <p className="text-sm text-[#C8C0E0]">{gap.target_title}</p>
                           </div>
                           <div>
-                            <span className="text-xs text-slate-500">How to Get In</span>
-                            <p className="text-sm text-slate-300">{gap.how_to_get_in}</p>
+                            <span className="text-xs text-tines-dim">How to Get In</span>
+                            <p className="text-sm text-[#C8C0E0]">{gap.how_to_get_in}</p>
                           </div>
                           <div>
                             <div className="flex items-center gap-1.5 mb-1">
-                              <Mail className="w-3 h-3 text-cyan-400" />
-                              <span className="text-xs text-cyan-400">Suggested Outreach</span>
+                              <Mail className="w-3 h-3 text-tines" />
+                              <span className="text-xs text-tines">Suggested Outreach</span>
                             </div>
-                            <div className="p-3 rounded-lg bg-white/[0.03] border border-white/10 text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
+                            <div className="p-3 rounded-lg bg-surface-raised border border-surface-border text-sm text-[#C8C0E0] leading-relaxed whitespace-pre-wrap">
                               {gap.outreach_message}
                             </div>
                           </div>
@@ -354,15 +354,15 @@ export default function SaThreadingBuilder({ dealName }: Props) {
 
           {/* Recommendations */}
           {analysis.recommendations.length > 0 && (
-            <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="p-5 rounded-xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-3">
-                <Sparkles className="w-5 h-5 text-cyan-400" />
+                <Sparkles className="w-5 h-5 text-tines" />
                 <h3 className="text-sm font-semibold text-white">Recommendations</h3>
               </div>
               <ul className="space-y-2">
                 {analysis.recommendations.map((rec, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
-                    <span className="w-5 h-5 rounded-full bg-cyan-500/10 flex items-center justify-center text-xs text-cyan-400 flex-shrink-0 mt-0.5">
+                  <li key={i} className="flex items-start gap-3 text-sm text-[#C8C0E0]">
+                    <span className="w-5 h-5 rounded-full bg-tines/10 flex items-center justify-center text-xs text-tines flex-shrink-0 mt-0.5">
                       {i + 1}
                     </span>
                     {rec}

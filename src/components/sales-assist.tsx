@@ -248,7 +248,7 @@ export default function SalesAssist() {
           /* ── Welcome screen ── */
           <div className="flex flex-col items-center justify-center h-full text-center">
             <h2 className="text-2xl font-bold text-white mb-2">What do you need?</h2>
-            <p className="text-slate-400 text-sm mb-8">
+            <p className="text-tines-muted text-sm mb-8">
               Your AI sales engineer &mdash; built for security sellers, by a seller.
             </p>
 
@@ -261,8 +261,8 @@ export default function SalesAssist() {
                     setActiveTool(qa.tool)
                     if (qa.prompt) sendMessage(qa.prompt, qa.tool)
                   }}
-                  className="px-4 py-2 rounded-full border border-white/10 text-sm text-slate-400
-                             hover:border-cyan-500/50 hover:text-cyan-400 transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-full border border-surface-border text-sm text-tines-muted
+                             hover:border-tines/30 hover:text-tines transition-colors cursor-pointer"
                 >
                   {qa.label}
                 </button>
@@ -280,21 +280,21 @@ export default function SalesAssist() {
                 <div
                   className={`max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap
                     ${msg.role === 'user'
-                      ? 'bg-cyan-600 text-white'
-                      : 'bg-white/5 border border-white/10 text-slate-300'
+                      ? 'bg-tines text-white'
+                      : 'bg-surface-raised border border-surface-border text-[#C8C0E0]'
                     }`}
                 >
                   {/* Tool badge + meta on assistant messages */}
                   {msg.role === 'assistant' && (
-                    <div className="flex items-center gap-2 mb-2 text-[10px] uppercase tracking-wider text-slate-500">
+                    <div className="flex items-center gap-2 mb-2 text-[10px] uppercase tracking-wider text-tines-dim">
                       <span
                         className="inline-block w-2 h-2 rounded-full"
                         style={{ backgroundColor: TOOL_COLORS[msg.tool] || '#9AA3B0' }}
                       />
                       <span>{TOOL_LABELS[msg.tool] || msg.tool}</span>
-                      <span className="text-slate-600">|</span>
+                      <span className="text-tines-dim">|</span>
                       <span>{msg.tone.split(' ')[0]}</span>
-                      <span className="text-slate-600">|</span>
+                      <span className="text-tines-dim">|</span>
                       <span>{msg.methodology.split(' ')[0]}</span>
                     </div>
                   )}
@@ -303,11 +303,11 @@ export default function SalesAssist() {
 
                   {/* Action buttons on assistant messages */}
                   {msg.role === 'assistant' && (
-                    <div className="flex items-center gap-2 mt-3 pt-2 border-t border-white/5">
+                    <div className="flex items-center gap-2 mt-3 pt-2 border-t border-surface-border/50">
                       <button
                         type="button"
                         onClick={() => handleCopy(msg.id, msg.content)}
-                        className="flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-300
+                        className="flex items-center gap-1 text-[11px] text-tines-dim hover:text-[#C8C0E0]
                                    transition-colors cursor-pointer"
                       >
                         {copiedId === msg.id ? (
@@ -319,7 +319,7 @@ export default function SalesAssist() {
                       <button
                         type="button"
                         onClick={handleShorter}
-                        className="flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-300
+                        className="flex items-center gap-1 text-[11px] text-tines-dim hover:text-[#C8C0E0]
                                    transition-colors cursor-pointer"
                       >
                         <ArrowDownNarrowWide className="w-3 h-3" /> Shorter
@@ -327,7 +327,7 @@ export default function SalesAssist() {
                       <button
                         type="button"
                         onClick={handleRegenerate}
-                        className="flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-300
+                        className="flex items-center gap-1 text-[11px] text-tines-dim hover:text-[#C8C0E0]
                                    transition-colors cursor-pointer"
                       >
                         <RefreshCw className="w-3 h-3" /> Regenerate
@@ -341,11 +341,11 @@ export default function SalesAssist() {
             {/* Loading dots */}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                <div className="bg-surface-raised border border-surface-border rounded-xl px-4 py-3">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span className="w-1.5 h-1.5 bg-tines rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1.5 h-1.5 bg-tines rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1.5 h-1.5 bg-tines rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               </div>

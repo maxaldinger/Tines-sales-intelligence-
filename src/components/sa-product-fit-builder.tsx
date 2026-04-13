@@ -45,7 +45,7 @@ interface Props {
 
 function scoreColor(score: number) {
   if (score >= 80) return { bar: 'bg-emerald-500', text: 'text-emerald-400', bg: 'bg-emerald-500/10' }
-  if (score >= 60) return { bar: 'bg-cyan-500', text: 'text-cyan-400', bg: 'bg-cyan-500/10' }
+  if (score >= 60) return { bar: 'bg-tines', text: 'text-tines', bg: 'bg-tines/10' }
   if (score >= 40) return { bar: 'bg-yellow-500', text: 'text-yellow-400', bg: 'bg-yellow-500/10' }
   if (score >= 20) return { bar: 'bg-orange-500', text: 'text-orange-400', bg: 'bg-orange-500/10' }
   return { bar: 'bg-red-500', text: 'text-red-400', bg: 'bg-red-500/10' }
@@ -55,8 +55,8 @@ function severityStyle(severity: string) {
   switch (severity.toLowerCase()) {
     case 'high': return 'text-red-400 bg-red-500/10 border-red-500/20'
     case 'medium': return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20'
-    case 'low': return 'text-slate-400 bg-white/5 border-white/10'
-    default: return 'text-slate-400 bg-white/5 border-white/10'
+    case 'low': return 'text-tines-muted bg-surface-raised border-surface-border'
+    default: return 'text-tines-muted bg-surface-raised border-surface-border'
   }
 }
 
@@ -94,7 +94,7 @@ export default function SaProductFitBuilder({ dealName }: Props) {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-white mb-1">Product Fit Analysis</h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-tines-muted">
           Analyze meeting notes across Security Automation Fit, Alert Fatigue Impact, SOAR Replacement Value, Compliance & Governance, SOC Scalability, and Tool Consolidation.
         </p>
       </div>
@@ -106,12 +106,12 @@ export default function SaProductFitBuilder({ dealName }: Props) {
             onChange={e => setNotes(e.target.value)}
             placeholder="Paste meeting notes, requirements, pain points, or discovery call details..."
             rows={12}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm resize-none leading-relaxed"
+            className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
           />
           <button
             onClick={analyze}
             disabled={loading || !notes.trim()}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-[#6A4AE0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-tines-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
@@ -137,37 +137,37 @@ export default function SaProductFitBuilder({ dealName }: Props) {
           {/* Back button */}
           <button
             onClick={() => setMode('input')}
-            className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+            className="px-4 py-2 rounded-xl bg-surface-raised border border-surface-border text-[#C8C0E0] text-sm hover:bg-tines/5 transition-colors"
           >
             Edit Notes
           </button>
 
           {/* Overall fit card */}
-          <div className="p-6 rounded-xl bg-white/[0.03] border border-white/10">
+          <div className="p-6 rounded-xl bg-surface-raised border border-surface-border">
             <div className="flex items-center gap-6">
               <div className={`w-20 h-20 rounded-2xl ${overallColors?.bg} flex flex-col items-center justify-center flex-shrink-0`}>
                 <span className={`text-3xl font-bold ${overallColors?.text}`}>{results.overall_score}</span>
-                <span className="text-[10px] text-slate-400 mt-0.5">{results.overall_label}</span>
+                <span className="text-[10px] text-tines-muted mt-0.5">{results.overall_label}</span>
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-white mb-1">Overall Product Fit</h3>
-                <p className="text-sm text-slate-300 leading-relaxed">{results.overall_summary}</p>
+                <p className="text-sm text-[#C8C0E0] leading-relaxed">{results.overall_summary}</p>
               </div>
             </div>
           </div>
 
           {/* Product fit cards */}
           {results.products.length > 0 && (
-            <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="p-5 rounded-xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-4">
-                <Package className="w-5 h-5 text-cyan-400" />
+                <Package className="w-5 h-5 text-tines" />
                 <h3 className="text-sm font-semibold text-white">Product Fit Scores</h3>
               </div>
               <div className="space-y-4">
                 {results.products.map((p, i) => {
                   const colors = scoreColor(p.score)
                   return (
-                    <div key={i} className="p-4 rounded-lg bg-white/5 border border-white/5">
+                    <div key={i} className="p-4 rounded-lg bg-surface-raised border border-surface-border">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-white">{p.product}</span>
                         <div className="flex items-center gap-2">
@@ -176,17 +176,17 @@ export default function SaProductFitBuilder({ dealName }: Props) {
                         </div>
                       </div>
                       {/* Score bar */}
-                      <div className="w-full h-1.5 rounded-full bg-white/5 mb-3">
+                      <div className="w-full h-1.5 rounded-full bg-surface-raised mb-3">
                         <div
                           className={`h-full rounded-full ${colors.bar} transition-all duration-700`}
                           style={{ width: `${p.score}%` }}
                         />
                       </div>
-                      <p className="text-xs text-slate-400 leading-relaxed">{p.reasoning}</p>
+                      <p className="text-xs text-tines-muted leading-relaxed">{p.reasoning}</p>
                       {p.evidence.length > 0 && (
                         <div className="mt-2 flex flex-wrap gap-1.5">
                           {p.evidence.map((e, j) => (
-                            <span key={j} className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-slate-400 border border-white/5">
+                            <span key={j} className="text-[10px] px-2 py-0.5 rounded-full bg-surface-raised text-tines-muted border border-surface-border">
                               {e}
                             </span>
                           ))}
@@ -201,21 +201,21 @@ export default function SaProductFitBuilder({ dealName }: Props) {
 
           {/* Discovery gaps */}
           {results.discovery_gaps.length > 0 && (
-            <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="p-5 rounded-xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-4">
                 <HelpCircle className="w-5 h-5 text-amber-400" />
                 <h3 className="text-sm font-semibold text-white">Discovery Gaps</h3>
               </div>
               <div className="space-y-3">
                 {results.discovery_gaps.map((gap, i) => (
-                  <div key={i} className="p-3 rounded-lg bg-white/5 border border-white/5">
+                  <div key={i} className="p-3 rounded-lg bg-surface-raised border border-surface-border">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
                         {gap.area}
                       </span>
                     </div>
                     <p className="text-sm font-medium text-white mt-1">{gap.question}</p>
-                    <p className="text-xs text-slate-400 mt-1">{gap.why_important}</p>
+                    <p className="text-xs text-tines-muted mt-1">{gap.why_important}</p>
                   </div>
                 ))}
               </div>
@@ -224,7 +224,7 @@ export default function SaProductFitBuilder({ dealName }: Props) {
 
           {/* Red flags */}
           {results.red_flags.length > 0 && (
-            <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="p-5 rounded-xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-4">
                 <AlertTriangle className="w-5 h-5 text-red-400" />
                 <h3 className="text-sm font-semibold text-white">Red Flags</h3>
@@ -238,7 +238,7 @@ export default function SaProductFitBuilder({ dealName }: Props) {
                       </span>
                       <span className="text-sm font-medium text-white">{rf.flag}</span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-1">{rf.detail}</p>
+                    <p className="text-xs text-tines-muted mt-1">{rf.detail}</p>
                   </div>
                 ))}
               </div>
@@ -247,18 +247,18 @@ export default function SaProductFitBuilder({ dealName }: Props) {
 
           {/* Not a fit */}
           {results.not_a_fit.length > 0 && (
-            <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="p-5 rounded-xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-4">
-                <XCircle className="w-5 h-5 text-slate-500" />
+                <XCircle className="w-5 h-5 text-tines-dim" />
                 <h3 className="text-sm font-semibold text-white">Not a Fit</h3>
               </div>
               <div className="space-y-2">
                 {results.not_a_fit.map((nf, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-white/5">
-                    <XCircle className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-surface-raised">
+                    <XCircle className="w-4 h-4 text-tines-dim flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-slate-300">{nf.product}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{nf.reason}</p>
+                      <p className="text-sm font-medium text-[#C8C0E0]">{nf.product}</p>
+                      <p className="text-xs text-tines-dim mt-0.5">{nf.reason}</p>
                     </div>
                   </div>
                 ))}

@@ -138,20 +138,20 @@ export default function SignalFeed() {
       {/* Company Search Bar */}
       <div className="flex gap-3">
         <div className="flex-1 relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-tines-muted" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && searchCompany()}
             placeholder="Deep-dive any company for Tines fit analysis"
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 text-sm"
+            className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 focus:ring-1 focus:ring-tines/15 text-sm"
           />
         </div>
         <button
           onClick={searchCompany}
           disabled={searchLoading || !searchQuery.trim()}
-          className="px-6 rounded-xl bg-tines text-white font-medium text-sm hover:bg-[#6a4de0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 rounded-xl bg-tines text-white font-medium text-sm hover:bg-tines-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {searchLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Analyze'}
         </button>
@@ -159,13 +159,13 @@ export default function SignalFeed() {
 
       {/* Search Loading */}
       {searchLoading && (
-        <div className="p-6 rounded-xl bg-white/[0.03] border border-white/10">
+        <div className="p-6 rounded-xl bg-surface-raised border border-surface-border">
           <div className="space-y-2">
             {SEARCH_STEPS.map((s, i) => (
               <div key={i} className={`flex items-center gap-3 text-sm transition-all duration-300 ${
-                i < searchStep ? 'text-emerald-400' : i === searchStep ? 'text-purple-400' : 'text-slate-600'
+                i < searchStep ? 'text-emerald-400' : i === searchStep ? 'text-tines' : 'text-tines-dim'
               }`}>
-                {i < searchStep ? <Check className="w-4 h-4" /> : i === searchStep ? <RefreshCw className="w-4 h-4 animate-spin" /> : <div className="w-4 h-4 rounded-full border border-slate-600" />}
+                {i < searchStep ? <Check className="w-4 h-4" /> : i === searchStep ? <RefreshCw className="w-4 h-4 animate-spin" /> : <div className="w-4 h-4 rounded-full border border-tines-dim" />}
                 {s}
               </div>
             ))}
@@ -175,19 +175,19 @@ export default function SignalFeed() {
 
       {/* Search Error */}
       {searchError && (
-        <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300 text-sm">{searchError}</div>
+        <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/15 text-red-400 text-sm">{searchError}</div>
       )}
 
       {/* Search Result */}
       {searchResult && (
-        <div className="p-6 rounded-xl bg-white/[0.02] border border-purple-500/20">
+        <div className="p-6 rounded-xl bg-surface-raised border border-tines/15">
           <div className="flex justify-between mb-4">
-            <span className="text-[10px] uppercase tracking-widest text-purple-400 font-bold">Company Intel</span>
+            <span className="text-[10px] uppercase tracking-widest text-tines font-bold">Company Intel</span>
             <div className="flex items-center gap-3">
-              <button onClick={copyBrief} className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1">
+              <button onClick={copyBrief} className="text-xs text-tines hover:text-tines-light flex items-center gap-1">
                 {searchCopied ? <><Check className="w-3 h-3" /> Copied</> : <><Copy className="w-3 h-3" /> Copy Brief</>}
               </button>
-              <button onClick={() => setSearchResult(null)} className="text-slate-500 hover:text-white">
+              <button onClick={() => setSearchResult(null)} className="text-tines-dim hover:text-white">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -199,15 +199,15 @@ export default function SignalFeed() {
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
         {[
-          { label: 'Companies Tracked', value: companies.length, Icon: Building2, color: 'text-purple-400' },
+          { label: 'Companies Tracked', value: companies.length, Icon: Building2, color: 'text-tines' },
           { label: 'High Urgency', value: highCount, Icon: Zap, color: 'text-red-400' },
           { label: 'Total Signals', value: totalSignals, Icon: TrendingUp, color: 'text-emerald-400' },
-          { label: 'Verticals Active', value: verticalSet.size, Icon: Clock, color: 'text-violet-400' },
+          { label: 'Verticals Active', value: verticalSet.size, Icon: Clock, color: 'text-tines' },
         ].map(({ label, value, Icon, color }) => (
-          <div key={label} className="p-4 rounded-xl bg-white/5 border border-white/10">
+          <div key={label} className="p-4 rounded-xl bg-surface-raised border border-surface-border">
             <div className="flex items-center gap-2 mb-1">
               <Icon className={`w-4 h-4 ${color}`} />
-              <span className="text-xs text-slate-400">{label}</span>
+              <span className="text-xs text-tines-muted">{label}</span>
             </div>
             <div className="text-2xl font-bold text-white">{value}</div>
           </div>
@@ -220,7 +220,7 @@ export default function SignalFeed() {
           <button
             onClick={() => setFilter('all')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              filter === 'all' ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'
+              filter === 'all' ? 'bg-white/10 text-white' : 'text-tines-muted hover:text-white hover:bg-tines/5'
             }`}
           >
             All
@@ -232,7 +232,7 @@ export default function SignalFeed() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 filter === v.id
                   ? `${VERTICAL_COLORS[v.id]} border`
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  : 'text-tines-muted hover:text-white hover:bg-tines/5'
               }`}
             >
               {v.label}
@@ -247,7 +247,7 @@ export default function SignalFeed() {
               className={`px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider transition-all ${
                 urgencyFilter === u
                   ? u === 'all' ? 'bg-white/10 text-white' : URGENCY_COLORS[u]
-                  : 'text-slate-500 hover:text-slate-300'
+                  : 'text-tines-dim hover:text-[#C8C0E0]'
               }`}
             >
               {u}
@@ -256,7 +256,7 @@ export default function SignalFeed() {
           <button
             onClick={() => fetchFeed(true)}
             disabled={loading}
-            className="ml-2 p-2 rounded-lg bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 transition-all disabled:opacity-50"
+            className="ml-2 p-2 rounded-lg bg-tines/10 text-tines hover:bg-tines/15 transition-all disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -265,28 +265,28 @@ export default function SignalFeed() {
 
       {/* Status */}
       {fetchedAt && (
-        <div className="text-xs text-slate-500 flex items-center gap-2">
+        <div className="text-xs text-tines-dim flex items-center gap-2">
           {isCached ? 'Cached' : 'Live'} &middot; {new Date(fetchedAt).toLocaleString()}
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300 text-sm">{error}</div>
+        <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/15 text-red-400 text-sm">{error}</div>
       )}
 
       {/* Loading */}
       {loading && companies.length === 0 && (
         <div className="text-center py-20">
-          <RefreshCw className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-4" />
-          <p className="text-slate-400">Scanning signals across Tines ICP verticals...</p>
+          <RefreshCw className="w-8 h-8 text-tines animate-spin mx-auto mb-4" />
+          <p className="text-tines-muted">Scanning signals across Tines ICP verticals...</p>
         </div>
       )}
 
       {/* Company List */}
       <div className="space-y-3">
         {filtered.map(c => (
-          <div key={c.company} className="rounded-xl bg-white/[0.03] border border-white/10 overflow-hidden hover:border-white/20 transition-all">
+          <div key={c.company} className="rounded-xl bg-surface-raised border border-surface-border overflow-hidden hover:border-tines/15 transition-all">
             <button
               onClick={() => toggleExpand(c.company)}
               className="w-full p-4 flex items-center gap-4 text-left"
@@ -299,37 +299,37 @@ export default function SignalFeed() {
                   <span className="font-semibold text-white truncate">{c.company}</span>
                   {c.amount && <span className="text-xs text-emerald-400 font-mono">{c.amount}</span>}
                 </div>
-                <p className="text-xs text-slate-400 truncate">{c.top_signal}</p>
+                <p className="text-xs text-tines-muted truncate">{c.top_signal}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className={`px-2 py-0.5 rounded text-[10px] font-medium border ${VERTICAL_COLORS[c.vertical_id] || 'bg-white/5 text-slate-400'}`}>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-medium border ${VERTICAL_COLORS[c.vertical_id] || 'bg-surface-raised text-tines-muted'}`}>
                   {c.vertical_label}
                 </span>
                 <span className={`px-1.5 py-0.5 rounded text-[10px] ${URGENCY_COLORS[c.urgency] || ''}`}>
                   {c.urgency}
                 </span>
-                <span className="text-xs text-slate-500">{c.signal_count}s</span>
-                {expanded === c.company ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                <span className="text-xs text-tines-dim">{c.signal_count}s</span>
+                {expanded === c.company ? <ChevronUp className="w-4 h-4 text-tines-muted" /> : <ChevronDown className="w-4 h-4 text-tines-muted" />}
               </div>
             </button>
 
             {expanded === c.company && (
-              <div className="border-t border-white/10 p-4">
+              <div className="border-t border-surface-border p-4">
                 {/* Why Tines */}
-                <div className="mb-4 p-3 rounded-lg bg-purple-500/5 border border-purple-500/10">
-                  <span className="text-[10px] uppercase tracking-wider text-purple-400">Why Tines</span>
-                  <p className="text-sm text-slate-300 mt-1">{c.why_tines}</p>
+                <div className="mb-4 p-3 rounded-lg bg-tines/5 border border-tines/10">
+                  <span className="text-[10px] uppercase tracking-wider text-tines">Why Tines</span>
+                  <p className="text-sm text-[#C8C0E0] mt-1">{c.why_tines}</p>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex gap-4 mb-4 border-b border-white/10">
+                <div className="flex gap-4 mb-4 border-b border-surface-border">
                   {['intel', 'timeline'].map(t => (
                     <button
                       key={t}
                       onClick={() => setActiveTab(p => ({ ...p, [c.company]: t }))}
                       className={`pb-2 text-xs font-medium capitalize border-b-2 transition-all ${
                         (activeTab[c.company] || 'intel') === t
-                          ? 'border-purple-400 text-white' : 'border-transparent text-slate-400'
+                          ? 'border-tines text-white' : 'border-transparent text-tines-muted'
                       }`}
                     >
                       {t}
@@ -340,27 +340,27 @@ export default function SignalFeed() {
                 {(activeTab[c.company] || 'intel') === 'intel' && (
                   analyzing[c.company] ? (
                     <div className="text-center py-8">
-                      <RefreshCw className="w-5 h-5 text-purple-400 animate-spin mx-auto mb-2" />
-                      <p className="text-xs text-slate-400">Analyzing {c.company}...</p>
+                      <RefreshCw className="w-5 h-5 text-tines animate-spin mx-auto mb-2" />
+                      <p className="text-xs text-tines-muted">Analyzing {c.company}...</p>
                     </div>
                   ) : intel[c.company] ? (
                     <IntelCard intel={intel[c.company]} />
                   ) : (
-                    <p className="text-xs text-slate-500 py-4 text-center">Loading intelligence...</p>
+                    <p className="text-xs text-tines-dim py-4 text-center">Loading intelligence...</p>
                   )
                 )}
 
                 {(activeTab[c.company] || 'intel') === 'timeline' && (
                   <div className="space-y-2">
                     {(timeline[c.company] || []).length === 0 ? (
-                      <p className="text-xs text-slate-500 py-4 text-center">No timeline data yet</p>
+                      <p className="text-xs text-tines-dim py-4 text-center">No timeline data yet</p>
                     ) : (
                       timeline[c.company].map(t => (
                         <div key={t.id} className="flex items-start gap-3 text-xs">
-                          <div className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5 flex-shrink-0" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-tines mt-1.5 flex-shrink-0" />
                           <div className="flex-1">
-                            <span className="text-slate-300">{t.signal_text}</span>
-                            <div className="flex items-center gap-2 mt-0.5 text-slate-500">
+                            <span className="text-[#C8C0E0]">{t.signal_text}</span>
+                            <div className="flex items-center gap-2 mt-0.5 text-tines-dim">
                               <span>{SIGNAL_ICONS[t.signal_type] || ''} {t.signal_type}</span>
                               {t.signal_date && <span>{t.signal_date}</span>}
                             </div>
@@ -380,7 +380,7 @@ export default function SignalFeed() {
       </div>
 
       {!loading && filtered.length === 0 && companies.length > 0 && (
-        <p className="text-center text-slate-500 py-8">No companies match current filters</p>
+        <p className="text-center text-tines-dim py-8">No companies match current filters</p>
       )}
     </div>
   )

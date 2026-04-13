@@ -109,7 +109,7 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-white mb-1">Deck Builder</h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-tines-muted">
           Generate structured presentation slide content that you can copy into your deck tool.
         </p>
       </div>
@@ -118,7 +118,7 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
         <div className="space-y-4">
           {/* Deck type selector */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Deck Type</label>
+            <label className="block text-sm font-medium text-[#C8C0E0] mb-2">Deck Type</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {DECK_TYPES.map(dt => (
                 <button
@@ -126,12 +126,12 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
                   onClick={() => setDeckType(dt.value)}
                   className={`p-3 rounded-xl border text-left transition-colors ${
                     deckType === dt.value
-                      ? 'bg-cyan-500/10 border-cyan-500/30 text-white'
-                      : 'bg-white/[0.03] border-white/10 text-slate-300 hover:bg-white/5'
+                      ? 'bg-tines/10 border-tines/30 text-white'
+                      : 'bg-surface-raised border-surface-border text-[#C8C0E0] hover:bg-tines/5'
                   }`}
                 >
                   <p className="text-sm font-medium">{dt.label}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{dt.description}</p>
+                  <p className="text-xs text-tines-dim mt-0.5">{dt.description}</p>
                 </button>
               ))}
             </div>
@@ -139,7 +139,7 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-[#C8C0E0] mb-1.5">
               Context & Notes (optional)
             </label>
             <textarea
@@ -147,14 +147,14 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
               onChange={e => setNotes(e.target.value)}
               placeholder="Add any context: company details, pain points discussed, key stakeholders, industry..."
               rows={6}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm resize-none leading-relaxed"
+              className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
             />
           </div>
 
           <button
             onClick={generate}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-[#6A4AE0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-tines-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
@@ -181,15 +181,15 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMode('input')}
-              className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+              className="px-4 py-2 rounded-xl bg-surface-raised border border-surface-border text-[#C8C0E0] text-sm hover:bg-tines/5 transition-colors"
             >
               Edit Inputs
             </button>
             <div className="flex items-center gap-2 ml-auto">
-              <span className="text-xs text-slate-500">{slides.length} slides</span>
+              <span className="text-xs text-tines-dim">{slides.length} slides</span>
               <button
                 onClick={copyAll}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm hover:bg-cyan-500/20 transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-tines/10 border border-tines/15 text-tines text-sm hover:bg-tines/15 transition-colors"
               >
                 {copied ? (
                   <>
@@ -211,17 +211,17 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
             {slides.map((slide, i) => (
               <div
                 key={i}
-                className="rounded-xl bg-white/[0.03] border border-white/10 overflow-hidden"
+                className="rounded-xl bg-surface-raised border border-surface-border overflow-hidden"
               >
                 {/* Slide header */}
-                <div className="flex items-center gap-3 px-5 py-3 border-b border-white/5 bg-white/[0.02]">
-                  <span className="w-7 h-7 rounded-lg bg-cyan-500/10 flex items-center justify-center text-xs text-cyan-400 font-bold">
+                <div className="flex items-center gap-3 px-5 py-3 border-b border-white/5 bg-surface-raised">
+                  <span className="w-7 h-7 rounded-lg bg-tines/10 flex items-center justify-center text-xs text-tines font-bold">
                     {i + 1}
                   </span>
                   <h3 className="text-sm font-semibold text-white flex-1">{slide.title}</h3>
                   <button
                     onClick={() => copySlide(slide)}
-                    className="p-1.5 rounded-lg hover:bg-white/5 text-slate-500 hover:text-white transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-tines/5 text-tines-dim hover:text-white transition-colors"
                     title="Copy slide"
                   >
                     <Copy className="w-3.5 h-3.5" />
@@ -230,7 +230,7 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
 
                 {/* Slide content */}
                 <div className="px-5 py-4">
-                  <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
+                  <div className="text-sm text-[#C8C0E0] leading-relaxed whitespace-pre-wrap">
                     {slide.content}
                   </div>
                 </div>
@@ -240,19 +240,19 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
                   <div className="border-t border-white/5">
                     <button
                       onClick={() => setExpandedNotes(expandedNotes === i ? null : i)}
-                      className="w-full flex items-center gap-2 px-5 py-2.5 text-left hover:bg-white/[0.02] transition-colors"
+                      className="w-full flex items-center gap-2 px-5 py-2.5 text-left hover:bg-surface-raised transition-colors"
                     >
                       <StickyNote className="w-3.5 h-3.5 text-amber-400" />
-                      <span className="text-xs text-slate-500 font-medium">Speaker Notes</span>
+                      <span className="text-xs text-tines-dim font-medium">Speaker Notes</span>
                       {expandedNotes === i ? (
-                        <ChevronUp className="w-3.5 h-3.5 text-slate-500 ml-auto" />
+                        <ChevronUp className="w-3.5 h-3.5 text-tines-dim ml-auto" />
                       ) : (
-                        <ChevronDown className="w-3.5 h-3.5 text-slate-500 ml-auto" />
+                        <ChevronDown className="w-3.5 h-3.5 text-tines-dim ml-auto" />
                       )}
                     </button>
                     {expandedNotes === i && (
                       <div className="px-5 pb-4">
-                        <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-wrap">
+                        <p className="text-xs text-tines-muted leading-relaxed whitespace-pre-wrap">
                           {slide.speaker_notes}
                         </p>
                       </div>

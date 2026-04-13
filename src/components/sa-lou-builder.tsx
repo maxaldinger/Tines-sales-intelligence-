@@ -121,7 +121,7 @@ export default function SaLouBuilder({ dealName }: Props) {
       case 'High': return 'text-red-400'
       case 'Medium': return 'text-yellow-400'
       case 'Low': return 'text-emerald-400'
-      default: return 'text-slate-500'
+      default: return 'text-tines-dim'
     }
   }
 
@@ -129,7 +129,7 @@ export default function SaLouBuilder({ dealName }: Props) {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-white mb-1">Letter of Understanding Builder</h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-tines-muted">
           Paste meeting notes or a transcript to generate a structured LOU table you can edit and export.
         </p>
       </div>
@@ -141,12 +141,12 @@ export default function SaLouBuilder({ dealName }: Props) {
             onChange={e => setTranscript(e.target.value)}
             placeholder="Paste meeting notes, call transcript, or key discussion points..."
             rows={12}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm resize-none leading-relaxed"
+            className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
           />
           <button
             onClick={generate}
             disabled={loading || !transcript.trim()}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-[#6A4AE0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-tines-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
@@ -173,20 +173,20 @@ export default function SaLouBuilder({ dealName }: Props) {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMode('input')}
-              className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+              className="px-4 py-2 rounded-xl bg-surface-raised border border-surface-border text-[#C8C0E0] text-sm hover:bg-tines/5 transition-colors"
             >
               Edit Notes
             </button>
             <button
               onClick={addRow}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-surface-raised border border-surface-border text-[#C8C0E0] text-sm hover:bg-tines/5 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               Add Issue
             </button>
             <button
               onClick={exportCSV}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm hover:bg-cyan-500/20 transition-colors ml-auto"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-tines/10 border border-tines/15 text-tines text-sm hover:bg-tines/15 transition-colors ml-auto"
             >
               <Download className="w-3.5 h-3.5" />
               Export CSV
@@ -194,22 +194,22 @@ export default function SaLouBuilder({ dealName }: Props) {
           </div>
 
           {/* Table */}
-          <div className="rounded-xl border border-white/10 overflow-hidden">
+          <div className="rounded-xl border border-surface-border overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-white/5">
-                    <th className="text-left px-4 py-3 text-slate-400 font-medium w-[28%]">Critical Business Issue</th>
-                    <th className="text-left px-4 py-3 text-slate-400 font-medium w-[28%]">Can we help? If so, how?</th>
-                    <th className="text-left px-4 py-3 text-slate-400 font-medium w-[14%]">Category</th>
-                    <th className="text-left px-4 py-3 text-slate-400 font-medium w-[10%]">Priority</th>
-                    <th className="text-left px-4 py-3 text-slate-400 font-medium w-[10%]">Timeframe</th>
-                    <th className="text-center px-4 py-3 text-slate-400 font-medium w-[10%]">Actions</th>
+                  <tr className="bg-surface-raised">
+                    <th className="text-left px-4 py-3 text-tines-muted font-medium w-[28%]">Critical Business Issue</th>
+                    <th className="text-left px-4 py-3 text-tines-muted font-medium w-[28%]">Can we help? If so, how?</th>
+                    <th className="text-left px-4 py-3 text-tines-muted font-medium w-[14%]">Category</th>
+                    <th className="text-left px-4 py-3 text-tines-muted font-medium w-[10%]">Priority</th>
+                    <th className="text-left px-4 py-3 text-tines-muted font-medium w-[10%]">Timeframe</th>
+                    <th className="text-center px-4 py-3 text-tines-muted font-medium w-[10%]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
                   {rows.map(row => (
-                    <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={row.id} className="hover:bg-surface-raised transition-colors">
                       {editingId === row.id && editDraft ? (
                         <>
                           <td className="px-3 py-2">
@@ -217,7 +217,7 @@ export default function SaLouBuilder({ dealName }: Props) {
                               value={editDraft.issue}
                               onChange={e => setEditDraft({ ...editDraft, issue: e.target.value })}
                               rows={2}
-                              className="w-full px-2 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-xs resize-none focus:outline-none focus:border-cyan-500/50"
+                              className="w-full px-2 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-xs resize-none focus:outline-none focus:border-tines/40"
                             />
                           </td>
                           <td className="px-3 py-2">
@@ -225,14 +225,14 @@ export default function SaLouBuilder({ dealName }: Props) {
                               value={editDraft.response}
                               onChange={e => setEditDraft({ ...editDraft, response: e.target.value })}
                               rows={2}
-                              className="w-full px-2 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-xs resize-none focus:outline-none focus:border-cyan-500/50"
+                              className="w-full px-2 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-xs resize-none focus:outline-none focus:border-tines/40"
                             />
                           </td>
                           <td className="px-3 py-2">
                             <select
                               value={editDraft.category}
                               onChange={e => setEditDraft({ ...editDraft, category: e.target.value })}
-                              className="w-full px-2 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-500/50"
+                              className="w-full px-2 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-xs focus:outline-none focus:border-tines/40"
                             >
                               {CATEGORIES.map(c => (
                                 <option key={c} value={c} className="bg-[#0D1117]">
@@ -245,7 +245,7 @@ export default function SaLouBuilder({ dealName }: Props) {
                             <select
                               value={editDraft.priority}
                               onChange={e => setEditDraft({ ...editDraft, priority: e.target.value })}
-                              className="w-full px-2 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-500/50"
+                              className="w-full px-2 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-xs focus:outline-none focus:border-tines/40"
                             >
                               {PRIORITIES.map(p => (
                                 <option key={p} value={p} className="bg-[#0D1117]">
@@ -258,7 +258,7 @@ export default function SaLouBuilder({ dealName }: Props) {
                             <select
                               value={editDraft.timeframe}
                               onChange={e => setEditDraft({ ...editDraft, timeframe: e.target.value })}
-                              className="w-full px-2 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-500/50"
+                              className="w-full px-2 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-xs focus:outline-none focus:border-tines/40"
                             >
                               {TIMEFRAMES.map(t => (
                                 <option key={t} value={t} className="bg-[#0D1117]">
@@ -280,17 +280,17 @@ export default function SaLouBuilder({ dealName }: Props) {
                         </>
                       ) : (
                         <>
-                          <td className="px-4 py-3 text-slate-300">{row.issue}</td>
-                          <td className="px-4 py-3 text-slate-300">{row.response}</td>
-                          <td className="px-4 py-3 text-slate-400">{row.category}</td>
+                          <td className="px-4 py-3 text-[#C8C0E0]">{row.issue}</td>
+                          <td className="px-4 py-3 text-[#C8C0E0]">{row.response}</td>
+                          <td className="px-4 py-3 text-tines-muted">{row.category}</td>
                           <td className={`px-4 py-3 font-medium ${priorityColor(row.priority)}`}>{row.priority}</td>
-                          <td className="px-4 py-3 text-slate-400">{row.timeframe}</td>
+                          <td className="px-4 py-3 text-tines-muted">{row.timeframe}</td>
                           <td className="px-4 py-3">
                             <div className="flex items-center justify-center gap-1">
-                              <button onClick={() => startEdit(row)} className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
+                              <button onClick={() => startEdit(row)} className="p-1.5 rounded-lg hover:bg-tines/5 text-tines-muted hover:text-white transition-colors">
                                 <Pencil className="w-3.5 h-3.5" />
                               </button>
-                              <button onClick={() => removeRow(row.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition-colors">
+                              <button onClick={() => removeRow(row.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 text-tines-muted hover:text-red-400 transition-colors">
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </div>
@@ -301,7 +301,7 @@ export default function SaLouBuilder({ dealName }: Props) {
                   ))}
                   {rows.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="px-4 py-8 text-center text-slate-500 text-sm">
+                      <td colSpan={6} className="px-4 py-8 text-center text-tines-dim text-sm">
                         No issues yet. Click "Add Issue" to get started.
                       </td>
                     </tr>

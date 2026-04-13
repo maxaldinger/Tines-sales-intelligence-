@@ -379,7 +379,7 @@ export default function TerritoryPlan() {
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-xl font-bold text-white mb-1">Territory Attack Plan - Q2 2026</h2>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-tines-muted">
             {allAccounts.length} pre-researched enterprise accounts with security automation challenges aligned to Tines&apos; ICP
           </p>
         </div>
@@ -390,8 +390,8 @@ export default function TerritoryPlan() {
             onClick={() => setShowImport(p => !p)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
               showImport
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 hover:text-slate-200'
+                ? 'bg-tines/15 text-tines-light border border-tines/25'
+                : 'bg-surface-raised text-tines-muted border border-surface-border hover:bg-tines/5 hover:text-white'
             }`}
           >
             <Upload className="w-3.5 h-3.5" />
@@ -399,11 +399,11 @@ export default function TerritoryPlan() {
           </button>
 
           {/* View toggle */}
-          <div className="flex rounded-lg border border-white/10 overflow-hidden">
+          <div className="flex rounded-lg border border-surface-border overflow-hidden">
             <button
               onClick={() => setView('list')}
               className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-all ${
-                view === 'list' ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-slate-200'
+                view === 'list' ? 'bg-tines/10 text-white' : 'text-tines-muted hover:text-white'
               }`}
             >
               <List className="w-3.5 h-3.5" />
@@ -412,7 +412,7 @@ export default function TerritoryPlan() {
             <button
               onClick={() => setView('map')}
               className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-all ${
-                view === 'map' ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-slate-200'
+                view === 'map' ? 'bg-tines/10 text-white' : 'text-tines-muted hover:text-white'
               }`}
             >
               <Map className="w-3.5 h-3.5" />
@@ -424,13 +424,13 @@ export default function TerritoryPlan() {
 
       {/* Import Panel */}
       {showImport && (
-        <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10 space-y-4">
+        <div className="p-5 rounded-xl bg-surface-raised border border-surface-border space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-white">Import Accounts</h3>
-              <p className="text-xs text-slate-400 mt-0.5">Paste one entry per line. Use company name alone, or add location: Company, City, ST or Company, City, ST ZIP</p>
+              <p className="text-xs text-tines-muted mt-0.5">Paste one entry per line. Use company name alone, or add location: Company, City, ST or Company, City, ST ZIP</p>
             </div>
-            <button onClick={() => setShowImport(false)} className="p-1 text-slate-500 hover:text-slate-300">
+            <button onClick={() => setShowImport(false)} className="p-1 text-tines-dim hover:text-[#C8C0E0]">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -440,14 +440,14 @@ export default function TerritoryPlan() {
             onChange={e => setImportText(e.target.value)}
             placeholder={'JPMorgan Chase\nBoeing, Arlington, VA 22202\nExxonMobil, Spring, TX 77389\nSnowflake'}
             rows={5}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm resize-none leading-relaxed"
+            className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
           />
 
           <div className="flex items-center gap-4">
             <button
               onClick={importAccounts}
               disabled={importing || !importText.trim()}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-tines text-white font-medium text-sm hover:bg-[#6A4AE0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-tines text-white font-medium text-sm hover:bg-tines-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {importing ? (
                 <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Importing...</>
@@ -459,11 +459,11 @@ export default function TerritoryPlan() {
             <label className="flex items-center gap-2 cursor-pointer select-none">
               <button
                 onClick={() => setIncludeDefaults(p => !p)}
-                className={`relative w-9 h-5 rounded-full transition-colors ${includeDefaults ? 'bg-cyan-600' : 'bg-white/10'}`}
+                className={`relative w-9 h-5 rounded-full transition-colors ${includeDefaults ? 'bg-tines' : 'bg-white/10'}`}
               >
                 <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${includeDefaults ? 'translate-x-4' : ''}`} />
               </button>
-              <span className="text-xs text-slate-400">Include default accounts</span>
+              <span className="text-xs text-tines-muted">Include default accounts</span>
             </label>
           </div>
 
@@ -472,14 +472,14 @@ export default function TerritoryPlan() {
             <div className="space-y-1.5">
               {Object.entries(importProgress).map(([name, status]) => (
                 <div key={name} className="flex items-center gap-2 text-xs">
-                  {status === 'pending' && <div className="w-3.5 h-3.5 rounded-full border border-slate-600" />}
-                  {status === 'loading' && <Loader2 className="w-3.5 h-3.5 text-cyan-400 animate-spin" />}
+                  {status === 'pending' && <div className="w-3.5 h-3.5 rounded-full border border-tines-dim" />}
+                  {status === 'loading' && <Loader2 className="w-3.5 h-3.5 text-tines animate-spin" />}
                   {status === 'done' && <Check className="w-3.5 h-3.5 text-emerald-400" />}
                   {status === 'error' && <X className="w-3.5 h-3.5 text-red-400" />}
-                  <span className={status === 'done' ? 'text-slate-300' : status === 'error' ? 'text-red-400' : 'text-slate-400'}>
+                  <span className={status === 'done' ? 'text-[#C8C0E0]' : status === 'error' ? 'text-red-400' : 'text-tines-muted'}>
                     {name}
                   </span>
-                  {status === 'loading' && <span className="text-slate-500">Analyzing...</span>}
+                  {status === 'loading' && <span className="text-tines-dim">Analyzing...</span>}
                   {status === 'error' && <span className="text-red-500">Failed</span>}
                 </div>
               ))}
@@ -490,24 +490,24 @@ export default function TerritoryPlan() {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+        <div className="p-4 rounded-xl bg-surface-raised border border-surface-border">
           <div className="flex items-center gap-2 mb-1">
-            <Building2 className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs text-slate-400">Target Accounts</span>
+            <Building2 className="w-4 h-4 text-tines" />
+            <span className="text-xs text-tines-muted">Target Accounts</span>
           </div>
           <div className="text-2xl font-bold text-white">{allAccounts.length}</div>
         </div>
-        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+        <div className="p-4 rounded-xl bg-surface-raised border border-surface-border">
           <div className="flex items-center gap-2 mb-1">
             <DollarSign className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs text-slate-400">Pipeline Target (Low)</span>
+            <span className="text-xs text-tines-muted">Pipeline Target (Low)</span>
           </div>
           <div className="text-2xl font-bold text-white">${(totalPipeline / 1000000).toFixed(1)}M</div>
         </div>
-        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+        <div className="p-4 rounded-xl bg-surface-raised border border-surface-border">
           <div className="flex items-center gap-2 mb-1">
-            <MapPin className="w-4 h-4 text-violet-400" />
-            <span className="text-xs text-slate-400">Verticals Covered</span>
+            <MapPin className="w-4 h-4 text-tines" />
+            <span className="text-xs text-tines-muted">Verticals Covered</span>
           </div>
           <div className="text-2xl font-bold text-white">{new Set(allAccounts.map(a => a.vertical_id)).size}</div>
         </div>
@@ -524,23 +524,23 @@ export default function TerritoryPlan() {
           {allAccounts.map((a, idx) => {
             const isOpen = expandedAccount === idx
             return (
-              <div key={`${a.company}-${idx}`} className="rounded-xl bg-white/[0.03] border border-white/10 overflow-hidden hover:border-white/20 transition-all">
+              <div key={`${a.company}-${idx}`} className="rounded-xl bg-surface-raised border border-surface-border overflow-hidden hover:border-tines/15 transition-all">
                 <button
                   onClick={() => setExpandedAccount(isOpen ? null : idx)}
                   className="w-full p-4 flex items-center gap-4 text-left"
                 >
-                  <span className="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-xs font-bold text-slate-400">
+                  <span className="w-7 h-7 rounded-lg bg-surface-raised flex items-center justify-center text-xs font-bold text-tines-muted">
                     {a.rank}
                   </span>
                   <div className="flex-1 min-w-0">
                     <span className="font-semibold text-white">{a.company}</span>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-medium border ${VERTICAL_COLORS[a.vertical_id] || 'bg-white/5 text-slate-400'}`}>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-medium border ${VERTICAL_COLORS[a.vertical_id] || 'bg-surface-raised text-tines-muted'}`}>
                         {a.vertical}
                       </span>
-                      {a.revenue && <span className="text-xs text-slate-500">{a.revenue}</span>}
+                      {a.revenue && <span className="text-xs text-tines-dim">{a.revenue}</span>}
                       {a.hq_city && (
-                        <span className="text-xs text-slate-500 flex items-center gap-1">
+                        <span className="text-xs text-tines-dim flex items-center gap-1">
                           <MapPin className="w-3 h-3" />
                           {a.hq_city}, {a.hq_state}
                         </span>
@@ -548,29 +548,29 @@ export default function TerritoryPlan() {
                     </div>
                   </div>
                   <span className="text-sm font-mono text-emerald-400">{a.est_acv}</span>
-                  {isOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                  {isOpen ? <ChevronUp className="w-4 h-4 text-tines-muted" /> : <ChevronDown className="w-4 h-4 text-tines-muted" />}
                 </button>
 
                 {isOpen && (
-                  <div className="border-t border-white/10 p-4 space-y-4">
+                  <div className="border-t border-surface-border p-4 space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-3 rounded-lg bg-red-500/5 border border-red-500/10">
                         <div className="text-[10px] uppercase tracking-wider text-red-400 mb-1">Security Challenge</div>
-                        <p className="text-xs text-slate-300">{a.security_challenge}</p>
+                        <p className="text-xs text-[#C8C0E0]">{a.security_challenge}</p>
                       </div>
-                      <div className="p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/10">
-                        <div className="text-[10px] uppercase tracking-wider text-cyan-400 mb-1">Tines Fit</div>
-                        <p className="text-xs text-slate-300">{a.tines_fit}</p>
+                      <div className="p-3 rounded-lg bg-tines/5 border border-tines/10">
+                        <div className="text-[10px] uppercase tracking-wider text-tines mb-1">Tines Fit</div>
+                        <p className="text-xs text-[#C8C0E0]">{a.tines_fit}</p>
                       </div>
                     </div>
 
-                    <div className="p-3 rounded-lg bg-violet-500/5 border border-violet-500/10">
-                      <div className="text-[10px] uppercase tracking-wider text-violet-400 mb-1">Entry Strategy</div>
-                      <p className="text-xs text-slate-300">{a.entry_strategy}</p>
+                    <div className="p-3 rounded-lg bg-tines/5 border border-tines/10">
+                      <div className="text-[10px] uppercase tracking-wider text-tines mb-1">Entry Strategy</div>
+                      <p className="text-xs text-[#C8C0E0]">{a.entry_strategy}</p>
                     </div>
 
                     <div>
-                      <div className="text-[10px] uppercase tracking-wider text-slate-400 mb-2">Key Personas</div>
+                      <div className="text-[10px] uppercase tracking-wider text-tines-muted mb-2">Key Personas</div>
                       <div className="flex flex-wrap gap-2">
                         {a.key_personas.map((p, i) => (
                           <a
@@ -578,7 +578,7 @@ export default function TerritoryPlan() {
                             href={linkedinUrl(p, a.company)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-white/5 text-xs text-cyan-300 hover:bg-cyan-500/10 hover:text-cyan-200 transition-all"
+                            className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-surface-raised text-xs text-tines-light hover:bg-tines/10 hover:text-tines-light transition-all"
                           >
                             {p}
                             <ExternalLink className="w-3 h-3 opacity-60" />
@@ -590,7 +590,7 @@ export default function TerritoryPlan() {
                     <button
                       onClick={() => aiResearch(idx)}
                       disabled={researching[idx]}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 transition-all text-xs font-medium"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-tines/10 text-tines hover:bg-tines/15 transition-all text-xs font-medium"
                     >
                       {researching[idx] ? (
                         <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Researching...</>
@@ -607,37 +607,37 @@ export default function TerritoryPlan() {
                           <div className="flex items-center gap-3">
                             <div className="flex items-center gap-2">
                               <div className="w-24 h-2 rounded-full bg-white/10 overflow-hidden">
-                                <div className="h-full rounded-full bg-cyan-500" style={{ width: `${intel.relevance_score}%` }} />
+                                <div className="h-full rounded-full bg-tines" style={{ width: `${intel.relevance_score}%` }} />
                               </div>
-                              <span className="text-xs text-cyan-400 font-mono">{intel.relevance_score}%</span>
+                              <span className="text-xs text-tines font-mono">{intel.relevance_score}%</span>
                             </div>
-                            <span className="text-[10px] text-slate-400">{intel.relevance_label}</span>
-                            {intel.hq && <span className="text-[10px] text-slate-500">HQ: {intel.hq}</span>}
+                            <span className="text-[10px] text-tines-muted">{intel.relevance_label}</span>
+                            {intel.hq && <span className="text-[10px] text-tines-dim">HQ: {intel.hq}</span>}
                           </div>
 
                           <div className="grid grid-cols-2 gap-3">
                             <div className="p-3 rounded-lg bg-red-500/5 border border-red-500/10">
                               <div className="text-[10px] uppercase tracking-wider text-red-400 mb-1">Security Challenge</div>
-                              <p className="text-xs text-slate-300">{intel.security_challenge}</p>
+                              <p className="text-xs text-[#C8C0E0]">{intel.security_challenge}</p>
                             </div>
-                            <div className="p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/10">
-                              <div className="text-[10px] uppercase tracking-wider text-cyan-400 mb-1">Tines Fit</div>
-                              <p className="text-xs text-slate-300">{intel.tines_fit}</p>
+                            <div className="p-3 rounded-lg bg-tines/5 border border-tines/10">
+                              <div className="text-[10px] uppercase tracking-wider text-tines mb-1">Tines Fit</div>
+                              <p className="text-xs text-[#C8C0E0]">{intel.tines_fit}</p>
                             </div>
                           </div>
 
-                          <div className="p-3 rounded-lg bg-violet-500/5 border border-violet-500/10">
-                            <div className="text-[10px] uppercase tracking-wider text-violet-400 mb-1">Outreach Angle</div>
-                            <p className="text-xs text-slate-300">{intel.outreach_angle}</p>
+                          <div className="p-3 rounded-lg bg-tines/5 border border-tines/10">
+                            <div className="text-[10px] uppercase tracking-wider text-tines mb-1">Outreach Angle</div>
+                            <p className="text-xs text-[#C8C0E0]">{intel.outreach_angle}</p>
                           </div>
 
                           {intel.talking_points?.length > 0 && (
-                            <div className="p-3 rounded-lg bg-white/5">
-                              <div className="text-[10px] uppercase tracking-wider text-slate-400 mb-2">Talking Points</div>
+                            <div className="p-3 rounded-lg bg-surface-raised">
+                              <div className="text-[10px] uppercase tracking-wider text-tines-muted mb-2">Talking Points</div>
                               <ul className="space-y-1">
                                 {intel.talking_points.map((pt: string, pi: number) => (
-                                  <li key={pi} className="flex items-start gap-2 text-xs text-slate-300">
-                                    <span className="text-cyan-500 mt-0.5">&rarr;</span> {pt}
+                                  <li key={pi} className="flex items-start gap-2 text-xs text-[#C8C0E0]">
+                                    <span className="text-tines mt-0.5">&rarr;</span> {pt}
                                   </li>
                                 ))}
                               </ul>
@@ -646,11 +646,11 @@ export default function TerritoryPlan() {
 
                           {intel.target_contacts?.length > 0 && (
                             <div>
-                              <div className="text-[10px] uppercase tracking-wider text-slate-400 mb-2">Target Contacts</div>
+                              <div className="text-[10px] uppercase tracking-wider text-tines-muted mb-2">Target Contacts</div>
                               <div className="flex flex-wrap gap-2">
                                 {intel.target_contacts.map((c: Contact, ci: number) => (
                                   <a key={ci} href={c.linkedin_search} target="_blank" rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-white/5 text-xs text-cyan-300 hover:bg-cyan-500/10 hover:text-cyan-200 transition-all"
+                                    className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-surface-raised text-xs text-tines-light hover:bg-tines/10 hover:text-tines-light transition-all"
                                     title={c.why_target}>
                                     {c.title} <ExternalLink className="w-3 h-3 opacity-60" />
                                   </a>
@@ -664,7 +664,7 @@ export default function TerritoryPlan() {
                               <div className="text-[10px] uppercase tracking-wider text-amber-400 mb-1">Risk Factors</div>
                               <ul className="space-y-1">
                                 {intel.risk_flags.map((rf: string, ri: number) => (
-                                  <li key={ri} className="text-xs text-slate-400 flex items-start gap-2">
+                                  <li key={ri} className="text-xs text-tines-muted flex items-start gap-2">
                                     <span className="text-amber-500 mt-0.5">!</span> {rf}
                                   </li>
                                 ))}
@@ -680,12 +680,12 @@ export default function TerritoryPlan() {
                                   setCopied(`dd-${idx}`)
                                   setTimeout(() => setCopied(null), 2000)
                                 }}
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-xs text-slate-300 hover:bg-white/10 transition-all"
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-raised text-xs text-[#C8C0E0] hover:bg-tines/5 transition-all"
                               >
                                 {copied === `dd-${idx}` ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                                 {copied === `dd-${idx}` ? 'Copied' : 'Copy outreach'}
                               </button>
-                              <span className="text-[10px] text-slate-500 truncate">Subject: {intel.email_subject}</span>
+                              <span className="text-[10px] text-tines-dim truncate">Subject: {intel.email_subject}</span>
                             </div>
                           )}
                         </div>

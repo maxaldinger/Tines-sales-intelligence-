@@ -144,13 +144,13 @@ export default function KnowledgeGraph() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-white mb-1">Platform Knowledge Graph</h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-tines-muted">
           Code architecture of Tines Lead Intel rendered as an interactive knowledge graph &mdash; real components, actual data operations, true system topology
         </p>
       </div>
 
       <div className="flex gap-4">
-        <div className="flex-1 rounded-xl bg-[#060a14] border border-white/10 overflow-hidden relative">
+        <div className="flex-1 rounded-xl bg-[#060a14] border border-surface-border overflow-hidden relative">
           <svg viewBox="0 0 1050 720" className="w-full h-auto">
             <defs>
               <filter id="glow">
@@ -265,7 +265,7 @@ export default function KnowledgeGraph() {
 
         {/* Detail Panel */}
         {selected && (
-          <div className="w-80 rounded-xl bg-white/[0.03] border border-white/10 p-5 space-y-4 flex-shrink-0 max-h-[700px] overflow-y-auto">
+          <div className="w-80 rounded-xl bg-surface-raised border border-surface-border p-5 space-y-4 flex-shrink-0 max-h-[700px] overflow-y-auto">
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
@@ -276,19 +276,19 @@ export default function KnowledgeGraph() {
                 </div>
                 <h3 className="text-lg font-bold text-white mt-1 font-mono">{selected.label.replace('\n', ' ')}</h3>
               </div>
-              <button onClick={() => setSelected(null)} className="text-slate-500 hover:text-white">
+              <button onClick={() => setSelected(null)} className="text-tines-dim hover:text-white">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-sm text-slate-300 leading-relaxed">{selected.description}</p>
+            <p className="text-sm text-[#C8C0E0] leading-relaxed">{selected.description}</p>
 
             {/* Inputs */}
             <div>
-              <h4 className="text-[10px] uppercase tracking-wider text-slate-500 mb-1.5">Inputs</h4>
+              <h4 className="text-[10px] uppercase tracking-wider text-tines-dim mb-1.5">Inputs</h4>
               {selected.inputs.map((inp, i) => (
-                <div key={i} className="text-xs text-slate-400 flex items-start gap-2 mb-1">
-                  <span className="text-cyan-500 mt-0.5">&larr;</span>
+                <div key={i} className="text-xs text-tines-muted flex items-start gap-2 mb-1">
+                  <span className="text-tines mt-0.5">&larr;</span>
                   <span className="font-mono">{inp}</span>
                 </div>
               ))}
@@ -296,9 +296,9 @@ export default function KnowledgeGraph() {
 
             {/* Outputs */}
             <div>
-              <h4 className="text-[10px] uppercase tracking-wider text-slate-500 mb-1.5">Outputs</h4>
+              <h4 className="text-[10px] uppercase tracking-wider text-tines-dim mb-1.5">Outputs</h4>
               {selected.outputs.map((out, i) => (
-                <div key={i} className="text-xs text-slate-400 flex items-start gap-2 mb-1">
+                <div key={i} className="text-xs text-tines-muted flex items-start gap-2 mb-1">
                   <span className="text-emerald-500 mt-0.5">&rarr;</span>
                   <span className="font-mono">{out}</span>
                 </div>
@@ -306,14 +306,14 @@ export default function KnowledgeGraph() {
             </div>
 
             {/* Tech */}
-            <div className="pt-2 border-t border-white/10">
-              <h4 className="text-[10px] uppercase tracking-wider text-slate-500 mb-1.5">Implementation</h4>
-              <p className="text-xs text-slate-400 font-mono leading-relaxed">{selected.tech}</p>
+            <div className="pt-2 border-t border-surface-border">
+              <h4 className="text-[10px] uppercase tracking-wider text-tines-dim mb-1.5">Implementation</h4>
+              <p className="text-xs text-tines-muted font-mono leading-relaxed">{selected.tech}</p>
             </div>
 
             {/* Relationships */}
-            <div className="pt-2 border-t border-white/10">
-              <h4 className="text-[10px] uppercase tracking-wider text-slate-500 mb-2">Relationships</h4>
+            <div className="pt-2 border-t border-surface-border">
+              <h4 className="text-[10px] uppercase tracking-wider text-tines-dim mb-2">Relationships</h4>
               <div className="space-y-1.5">
                 {EDGES.filter(e => e.from === selected.id || e.to === selected.id).map((e, i) => {
                   const isFrom = e.from === selected.id
@@ -322,14 +322,14 @@ export default function KnowledgeGraph() {
                   const otherColor = TYPE_COLORS[other.type]
                   return (
                     <div key={i}
-                      className="flex items-center gap-2 text-xs p-2 rounded-lg bg-white/5 cursor-pointer hover:bg-white/10 transition-all"
+                      className="flex items-center gap-2 text-xs p-2 rounded-lg bg-surface-raised cursor-pointer hover:bg-tines/5 transition-all"
                       onClick={() => setSelected(other)}
                     >
-                      <span className="text-slate-500">{isFrom ? '\u2192' : '\u2190'}</span>
+                      <span className="text-tines-dim">{isFrom ? '\u2192' : '\u2190'}</span>
                       <span className="px-1.5 py-0.5 rounded text-[10px] font-mono" style={{ backgroundColor: `${otherColor.stroke}20`, color: otherColor.text }}>
                         {e.label}
                       </span>
-                      <span className="text-slate-300 font-mono text-[11px]">{other.label.replace('\n', ' ')}</span>
+                      <span className="text-[#C8C0E0] font-mono text-[11px]">{other.label.replace('\n', ' ')}</span>
                     </div>
                   )
                 })}
@@ -337,13 +337,13 @@ export default function KnowledgeGraph() {
             </div>
 
             {/* Entity Properties */}
-            <div className="pt-2 border-t border-white/10">
-              <h4 className="text-[10px] uppercase tracking-wider text-slate-500 mb-2">Entity Properties</h4>
+            <div className="pt-2 border-t border-surface-border">
+              <h4 className="text-[10px] uppercase tracking-wider text-tines-dim mb-2">Entity Properties</h4>
               <div className="space-y-1 text-xs">
-                <div className="flex justify-between"><span className="text-slate-500">entity_id</span><span className="text-slate-300 font-mono">{selected.id}</span></div>
-                <div className="flex justify-between"><span className="text-slate-500">entity_type</span><span style={{ color: TYPE_COLORS[selected.type].text }}>{selected.type}</span></div>
-                <div className="flex justify-between"><span className="text-slate-500">in_degree</span><span className="text-slate-300">{EDGES.filter(e => e.to === selected.id).length}</span></div>
-                <div className="flex justify-between"><span className="text-slate-500">out_degree</span><span className="text-slate-300">{EDGES.filter(e => e.from === selected.id).length}</span></div>
+                <div className="flex justify-between"><span className="text-tines-dim">entity_id</span><span className="text-[#C8C0E0] font-mono">{selected.id}</span></div>
+                <div className="flex justify-between"><span className="text-tines-dim">entity_type</span><span style={{ color: TYPE_COLORS[selected.type].text }}>{selected.type}</span></div>
+                <div className="flex justify-between"><span className="text-tines-dim">in_degree</span><span className="text-[#C8C0E0]">{EDGES.filter(e => e.to === selected.id).length}</span></div>
+                <div className="flex justify-between"><span className="text-tines-dim">out_degree</span><span className="text-[#C8C0E0]">{EDGES.filter(e => e.from === selected.id).length}</span></div>
               </div>
             </div>
           </div>
@@ -353,14 +353,14 @@ export default function KnowledgeGraph() {
       {/* Graph Stats */}
       <div className="grid grid-cols-4 gap-4">
         {[
-          { label: 'Entities', value: NODES.length, color: 'text-cyan-400' },
+          { label: 'Entities', value: NODES.length, color: 'text-tines' },
           { label: 'Relationships', value: EDGES.length, color: 'text-emerald-400' },
-          { label: 'Entity Types', value: Object.keys(TYPE_COLORS).length, color: 'text-violet-400' },
+          { label: 'Entity Types', value: Object.keys(TYPE_COLORS).length, color: 'text-tines' },
           { label: 'Relationship Types', value: new Set(EDGES.map(e => e.label)).size, color: 'text-amber-400' },
         ].map(s => (
-          <div key={s.label} className="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+          <div key={s.label} className="p-4 rounded-xl bg-surface-raised border border-surface-border text-center">
             <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-            <div className="text-xs text-slate-400 mt-1">{s.label}</div>
+            <div className="text-xs text-tines-muted mt-1">{s.label}</div>
           </div>
         ))}
       </div>

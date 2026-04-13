@@ -116,7 +116,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-white mb-1">Proposal Builder</h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-tines-muted">
           Generate a structured proposal from meeting notes and suggested products.
         </p>
       </div>
@@ -124,29 +124,29 @@ export default function SaProposalBuilder({ dealName }: Props) {
       {mode === 'input' && (
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Meeting Notes / Context</label>
+            <label className="block text-sm font-medium text-[#C8C0E0] mb-1.5">Meeting Notes / Context</label>
             <textarea
               value={notes}
               onChange={e => setNotes(e.target.value)}
               placeholder="Paste meeting notes, key requirements, pain points discussed..."
               rows={10}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm resize-none leading-relaxed"
+              className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Suggested Products (optional)</label>
+            <label className="block text-sm font-medium text-[#C8C0E0] mb-1.5">Suggested Products (optional)</label>
             <textarea
               value={products}
               onChange={e => setProducts(e.target.value)}
               placeholder="List products or solutions to recommend, one per line..."
               rows={4}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 text-sm resize-none leading-relaxed"
+              className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
             />
           </div>
           <button
             onClick={generate}
             disabled={loading || !notes.trim()}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-[#6A4AE0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-tines text-white font-medium text-sm hover:bg-tines-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
@@ -173,14 +173,14 @@ export default function SaProposalBuilder({ dealName }: Props) {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMode('input')}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-surface-raised border border-surface-border text-[#C8C0E0] text-sm hover:bg-tines/5 transition-colors"
             >
               <Pencil className="w-3.5 h-3.5" />
               Edit Inputs
             </button>
             <button
               onClick={copyProposal}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm hover:bg-cyan-500/20 transition-colors ml-auto"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-tines/10 border border-tines/15 text-tines text-sm hover:bg-tines/15 transition-colors ml-auto"
             >
               {copied ? (
                 <>
@@ -197,7 +197,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
           </div>
 
           {/* Proposal document */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
+          <div className="rounded-xl border border-surface-border bg-surface-raised overflow-hidden">
             {/* Title */}
             <div className="px-8 pt-8 pb-4 border-b border-white/5">
               {editField === 'title' ? (
@@ -205,7 +205,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                   <input
                     value={proposal.title}
                     onChange={e => updateField('title', e.target.value)}
-                    className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xl font-bold focus:outline-none focus:border-cyan-500/50"
+                    className="flex-1 px-3 py-2 rounded-lg bg-surface-raised border border-surface-border text-white text-xl font-bold focus:outline-none focus:border-tines/40"
                     autoFocus
                   />
                   <button onClick={() => setEditField(null)} className="p-1.5 rounded-lg hover:bg-emerald-500/10 text-emerald-400">
@@ -214,26 +214,26 @@ export default function SaProposalBuilder({ dealName }: Props) {
                 </div>
               ) : (
                 <h3
-                  className="text-xl font-bold text-white cursor-pointer hover:text-cyan-400 transition-colors"
+                  className="text-xl font-bold text-white cursor-pointer hover:text-tines transition-colors"
                   onClick={() => setEditField('title')}
                 >
                   {proposal.title}
                 </h3>
               )}
-              <p className="text-sm text-slate-500 mt-1">{proposal.date}</p>
+              <p className="text-sm text-tines-dim mt-1">{proposal.date}</p>
             </div>
 
             <div className="px-8 py-6 space-y-6">
               {/* Executive Summary */}
               <div>
-                <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-2">Executive Summary</h4>
+                <h4 className="text-sm font-semibold text-tines uppercase tracking-wider mb-2">Executive Summary</h4>
                 {editField === 'executive_summary' ? (
                   <div className="flex flex-col gap-2">
                     <textarea
                       value={proposal.executive_summary}
                       onChange={e => updateField('executive_summary', e.target.value)}
                       rows={4}
-                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm resize-none focus:outline-none focus:border-cyan-500/50"
+                      className="w-full px-3 py-2 rounded-lg bg-surface-raised border border-surface-border text-white text-sm resize-none focus:outline-none focus:border-tines/40"
                       autoFocus
                     />
                     <button onClick={() => setEditField(null)} className="self-end p-1.5 rounded-lg hover:bg-emerald-500/10 text-emerald-400">
@@ -242,7 +242,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                   </div>
                 ) : (
                   <p
-                    className="text-sm text-slate-300 leading-relaxed cursor-pointer hover:text-white transition-colors"
+                    className="text-sm text-[#C8C0E0] leading-relaxed cursor-pointer hover:text-white transition-colors"
                     onClick={() => setEditField('executive_summary')}
                   >
                     {proposal.executive_summary}
@@ -252,23 +252,23 @@ export default function SaProposalBuilder({ dealName }: Props) {
 
               {/* Business Challenges */}
               <div>
-                <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-3">Business Challenges</h4>
+                <h4 className="text-sm font-semibold text-tines uppercase tracking-wider mb-3">Business Challenges</h4>
                 <div className="space-y-3">
                   {proposal.business_challenges.map((c, i) => (
-                    <div key={i} className="p-4 rounded-lg bg-white/5 border border-white/5">
+                    <div key={i} className="p-4 rounded-lg bg-surface-raised border border-surface-border">
                       {editField === `challenge-${i}` ? (
                         <div className="space-y-2">
                           <input
                             value={c.challenge}
                             onChange={e => updateChallenge(i, 'challenge', e.target.value)}
-                            className="w-full px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm font-medium focus:outline-none focus:border-cyan-500/50"
+                            className="w-full px-3 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-sm font-medium focus:outline-none focus:border-tines/40"
                             autoFocus
                           />
                           <textarea
                             value={c.detail}
                             onChange={e => updateChallenge(i, 'detail', e.target.value)}
                             rows={2}
-                            className="w-full px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm resize-none focus:outline-none focus:border-cyan-500/50"
+                            className="w-full px-3 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-sm resize-none focus:outline-none focus:border-tines/40"
                           />
                           <button onClick={() => setEditField(null)} className="p-1.5 rounded-lg hover:bg-emerald-500/10 text-emerald-400">
                             <Check className="w-4 h-4" />
@@ -280,7 +280,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                           onClick={() => setEditField(`challenge-${i}`)}
                         >
                           <p className="text-sm font-medium text-white">{c.challenge}</p>
-                          <p className="text-sm text-slate-400 mt-1">{c.detail}</p>
+                          <p className="text-sm text-tines-muted mt-1">{c.detail}</p>
                         </div>
                       )}
                     </div>
@@ -290,14 +290,14 @@ export default function SaProposalBuilder({ dealName }: Props) {
 
               {/* Recommended Solution */}
               <div>
-                <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-2">Recommended Solution</h4>
+                <h4 className="text-sm font-semibold text-tines uppercase tracking-wider mb-2">Recommended Solution</h4>
                 {editField === 'recommended_solution' ? (
                   <div className="flex flex-col gap-2">
                     <textarea
                       value={proposal.recommended_solution}
                       onChange={e => updateField('recommended_solution', e.target.value)}
                       rows={4}
-                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm resize-none focus:outline-none focus:border-cyan-500/50"
+                      className="w-full px-3 py-2 rounded-lg bg-surface-raised border border-surface-border text-white text-sm resize-none focus:outline-none focus:border-tines/40"
                       autoFocus
                     />
                     <button onClick={() => setEditField(null)} className="self-end p-1.5 rounded-lg hover:bg-emerald-500/10 text-emerald-400">
@@ -306,7 +306,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                   </div>
                 ) : (
                   <p
-                    className="text-sm text-slate-300 leading-relaxed cursor-pointer hover:text-white transition-colors"
+                    className="text-sm text-[#C8C0E0] leading-relaxed cursor-pointer hover:text-white transition-colors"
                     onClick={() => setEditField('recommended_solution')}
                   >
                     {proposal.recommended_solution}
@@ -316,14 +316,14 @@ export default function SaProposalBuilder({ dealName }: Props) {
 
               {/* Why Us */}
               <div>
-                <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-2">Why Us</h4>
+                <h4 className="text-sm font-semibold text-tines uppercase tracking-wider mb-2">Why Us</h4>
                 {editField === 'why_us' ? (
                   <div className="flex flex-col gap-2">
                     <textarea
                       value={proposal.why_us}
                       onChange={e => updateField('why_us', e.target.value)}
                       rows={4}
-                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm resize-none focus:outline-none focus:border-cyan-500/50"
+                      className="w-full px-3 py-2 rounded-lg bg-surface-raised border border-surface-border text-white text-sm resize-none focus:outline-none focus:border-tines/40"
                       autoFocus
                     />
                     <button onClick={() => setEditField(null)} className="self-end p-1.5 rounded-lg hover:bg-emerald-500/10 text-emerald-400">
@@ -332,7 +332,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                   </div>
                 ) : (
                   <p
-                    className="text-sm text-slate-300 leading-relaxed cursor-pointer hover:text-white transition-colors"
+                    className="text-sm text-[#C8C0E0] leading-relaxed cursor-pointer hover:text-white transition-colors"
                     onClick={() => setEditField('why_us')}
                   >
                     {proposal.why_us}
@@ -342,11 +342,11 @@ export default function SaProposalBuilder({ dealName }: Props) {
 
               {/* Next Steps */}
               <div>
-                <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-3">Next Steps</h4>
+                <h4 className="text-sm font-semibold text-tines uppercase tracking-wider mb-3">Next Steps</h4>
                 <ol className="space-y-3">
                   {proposal.next_steps.map((s, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="w-6 h-6 rounded-full bg-cyan-500/10 flex items-center justify-center text-xs text-cyan-400 flex-shrink-0 mt-0.5 font-medium">
+                      <span className="w-6 h-6 rounded-full bg-tines/10 flex items-center justify-center text-xs text-tines flex-shrink-0 mt-0.5 font-medium">
                         {i + 1}
                       </span>
                       {editField === `step-${i}` ? (
@@ -354,13 +354,13 @@ export default function SaProposalBuilder({ dealName }: Props) {
                           <input
                             value={s.step}
                             onChange={e => updateStep(i, 'step', e.target.value)}
-                            className="w-full px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm font-medium focus:outline-none focus:border-cyan-500/50"
+                            className="w-full px-3 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-sm font-medium focus:outline-none focus:border-tines/40"
                             autoFocus
                           />
                           <input
                             value={s.description}
                             onChange={e => updateStep(i, 'description', e.target.value)}
-                            className="w-full px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-cyan-500/50"
+                            className="w-full px-3 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-white text-sm focus:outline-none focus:border-tines/40"
                           />
                           <button onClick={() => setEditField(null)} className="p-1.5 rounded-lg hover:bg-emerald-500/10 text-emerald-400">
                             <Check className="w-4 h-4" />
@@ -372,7 +372,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                           onClick={() => setEditField(`step-${i}`)}
                         >
                           <p className="text-sm font-medium text-white">{s.step}</p>
-                          <p className="text-sm text-slate-400">{s.description}</p>
+                          <p className="text-sm text-tines-muted">{s.description}</p>
                         </div>
                       )}
                     </li>
@@ -388,7 +388,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                       value={proposal.closing_statement}
                       onChange={e => updateField('closing_statement', e.target.value)}
                       rows={3}
-                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm resize-none focus:outline-none focus:border-cyan-500/50"
+                      className="w-full px-3 py-2 rounded-lg bg-surface-raised border border-surface-border text-white text-sm resize-none focus:outline-none focus:border-tines/40"
                       autoFocus
                     />
                     <button onClick={() => setEditField(null)} className="self-end p-1.5 rounded-lg hover:bg-emerald-500/10 text-emerald-400">
@@ -397,7 +397,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
                   </div>
                 ) : (
                   <p
-                    className="text-sm text-slate-300 italic leading-relaxed cursor-pointer hover:text-white transition-colors"
+                    className="text-sm text-[#C8C0E0] italic leading-relaxed cursor-pointer hover:text-white transition-colors"
                     onClick={() => setEditField('closing_statement')}
                   >
                     {proposal.closing_statement}

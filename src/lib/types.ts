@@ -76,7 +76,7 @@ export const VERTICAL_COLORS: Record<string, string> = {
 export const URGENCY_COLORS: Record<string, string> = {
   high: 'bg-red-500/20 text-red-300',
   medium: 'bg-yellow-500/20 text-yellow-300',
-  low: 'bg-slate-500/20 text-slate-300',
+  low: 'bg-tines-dim/20 text-tines-muted',
 }
 
 export const SIGNAL_ICONS: Record<string, string> = {

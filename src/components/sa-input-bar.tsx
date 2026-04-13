@@ -169,8 +169,8 @@ export default function SAInputBar({
             onClick={() => onToolChange(t.id)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer
               ${isActive
-                ? 'border-cyan-500 text-cyan-400 bg-cyan-500/10'
-                : 'border-white/10 text-slate-400 hover:border-white/20 hover:text-slate-300'
+                ? 'border-tines text-tines bg-tines/10'
+                : 'border-surface-border text-tines-muted hover:border-tines/15 hover:text-[#C8C0E0]'
               }`}
             style={isActive ? {} : undefined}
           >
@@ -203,7 +203,7 @@ export default function SAInputBar({
   /* ── hideTextarea mode (used beneath builders) ── */
   if (hideTextarea) {
     return (
-      <div className="border-t border-white/10 px-4 py-3 space-y-3">
+      <div className="border-t border-surface-border px-4 py-3 space-y-3">
         {toolPills}
         {selectors}
       </div>
@@ -212,7 +212,7 @@ export default function SAInputBar({
 
   /* ── Full input bar ── */
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
+    <div className="rounded-xl border border-surface-border bg-surface-raised p-4 space-y-3">
       {/* Textarea + send */}
       <div className="flex items-end gap-2">
         <textarea
@@ -223,7 +223,7 @@ export default function SAInputBar({
           placeholder="What do you need help with?"
           rows={1}
           disabled={disabled}
-          className="flex-1 resize-none bg-transparent text-white text-sm placeholder-slate-500
+          className="flex-1 resize-none bg-transparent text-white text-sm placeholder-tines-dim
                      focus:outline-none leading-relaxed"
         />
         <button
@@ -231,7 +231,7 @@ export default function SAInputBar({
           onClick={handleSend}
           disabled={!text.trim() || disabled}
           className="flex items-center justify-center w-9 h-9 rounded-lg bg-tines text-white
-                     hover:bg-[#6A4AE0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors
+                     hover:bg-tines-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors
                      cursor-pointer"
         >
           <Send className="w-4 h-4" />
