@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
 const TINES_CONTEXT = `== YOUR COMPANY CONTEXT ==
 Company: Tines
 Description: Tines is the leading no-code security automation platform. It enables security teams to automate any workflow — from alert triage to incident response to compliance — without writing code and with no per-action pricing.
@@ -25,6 +23,7 @@ const TOOL_PROMPTS: Record<string, string> = {
   pricebook: 'You are a pricing proposals expert for security automation software. You help construct compelling pricing proposals that justify the investment vs. manual SOC operations.',
   objections: 'You are an objection handling expert for security automation sales. You use the Validate → Reframe → Proof → Close framework.',
   threading: 'You are a multi-threading strategy expert for security automation deals. You help reps engage CISOs, SOC managers, VP Security, and IT directors.',
+  meddpicc: 'You are an expert MEDDPICC deal qualification coach. You help sales reps strengthen their deal qualification across all 8 MEDDPICC dimensions: Metrics, Economic Buyer, Decision Criteria, Decision Process, Paper Process, Implicate the Pain, Champion, and Competition. You give specific, actionable advice on closing gaps and advancing deals.',
   general: 'You are an AI sales engineer and coach specializing in security automation. You help reps with discovery, qualification, demos, proposals, and closing.',
 };
 
@@ -44,30 +43,60 @@ const METHODOLOGY_PROMPTS: Record<string, string> = {
 
 export async function POST(request: Request) {
   try {
-    const { messages, tool, toneOverride, methodologyOverride } = await request.json();
-    if (!messages || !Array.isArray(messages)) return NextResponse.json({ error: 'messages array is required' }, { status: 400 });
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('[sa-chat] Missing ANTHROPIC_API_KEY');
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+    }
+
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+    let body: any;
+    try {
+      body = await request.json();
+    } catch (parseErr: any) {
+      console.error('[sa-chat] Request body parse error:', parseErr.message);
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
+
+    const { messages, tool, toneOverride, methodologyOverride } = body;
+
+    if (!messages || !Array.isArray(messages)) {
+      return NextResponse.json({ error: 'messages array is required' }, { status: 400 });
+    }
 
     const toolKey = tool || 'general';
     const toolPrompt = TOOL_PROMPTS[toolKey] || TOOL_PROMPTS.general;
+
     let systemPrompt = `${toolPrompt}\n\n`;
     if (toneOverride && TONE_PROMPTS[toneOverride]) systemPrompt += `${TONE_PROMPTS[toneOverride]}\n\n`;
     if (methodologyOverride && METHODOLOGY_PROMPTS[methodologyOverride]) systemPrompt += `${METHODOLOGY_PROMPTS[methodologyOverride]}\n\n`;
     systemPrompt += `Use the following company context to inform your responses.\n\n${TINES_CONTEXT}`;
 
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 2000,
-      system: systemPrompt,
-      messages: messages.map((m: { role: string; content: string }) => ({
-        role: m.role as 'user' | 'assistant',
-        content: m.content,
-      })),
-    });
+    console.log('[sa-chat] Calling Claude for tool:', toolKey, 'messages:', messages.length);
+
+    let response;
+    try {
+      response = await client.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: messages.map((m: { role: string; content: string }) => ({
+          role: m.role as 'user' | 'assistant',
+          content: m.content,
+        })),
+      });
+    } catch (claudeErr: any) {
+      console.error('[sa-chat] Claude API error:', claudeErr.message, claudeErr.status);
+      return NextResponse.json({ error: 'AI generation failed: ' + (claudeErr.message || 'unknown error') }, { status: 502 });
+    }
 
     const textBlock = response.content.find((block) => block.type === 'text');
     const message = textBlock ? textBlock.text : '';
+
+    console.log('[sa-chat] Success, response length:', message.length);
     return NextResponse.json({ message });
   } catch (error: unknown) {
+    console.error('[sa-chat] Unhandled error:', error);
     const errMsg = error instanceof Error ? error.message : 'Internal server error';
     return NextResponse.json({ error: errMsg }, { status: 500 });
   }

@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
 export async function POST(req: Request) {
   const { notes, account } = await req.json()
   if (!notes?.trim()) return NextResponse.json({ error: 'Notes are required' }, { status: 400 })
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+  }
+
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   try {
     const msg = await client.messages.create({
@@ -38,7 +42,8 @@ Below are raw call notes, meeting transcripts, or email threads from this deal. 
 }
 
 Rules:
-- "strong" = clear evidence in the notes. "weak" = partially addressed. "missing" = not mentioned at all.
+- "strong" = clear, specific evidence in the notes. "weak" = partially addressed or vague. "unknown" = not mentioned or discussed at all.
+- CRITICAL: If a MEDDPICC dimension was NOT discussed or mentioned in the notes, set its status to "unknown" and leave evidence and gap as empty strings. Do NOT guess or fabricate evidence for topics that weren't covered. Only fill in fields where the notes provide real signal.
 - Include 3-5 threading recommendations targeting security personas (CISO, SOC Manager, VP Security, IT Director, Security Engineer).
 - Include 4-6 next steps, ordered by priority.
 - Be specific to what's in the notes. Don't be generic.
