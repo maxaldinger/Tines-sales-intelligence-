@@ -21,12 +21,36 @@ export default function SAFollowUpChat({ tool, dealName, context, placeholder }:
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const [inputHeight, setInputHeight] = useState(38)
+  const isDragging = useRef(false)
+  const dragStart = useRef({ y: 0, height: 0 })
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
   }, [messages])
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!isDragging.current) return
+      const delta = dragStart.current.y - e.clientY
+      setInputHeight(Math.max(38, Math.min(300, dragStart.current.height + delta)))
+    }
+    const onUp = () => { isDragging.current = false }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+    }
+  }, [])
+
+  const handleResizeStart = (e: React.MouseEvent) => {
+    isDragging.current = true
+    dragStart.current = { y: e.clientY, height: inputHeight }
+    e.preventDefault()
+  }
 
   const sendMessage = async () => {
     const text = input.trim()
@@ -120,8 +144,16 @@ export default function SAFollowUpChat({ tool, dealName, context, placeholder }:
         </div>
       )}
 
+      {/* Resize handle — drag up to expand */}
+      <div
+        className="flex justify-center py-1.5 cursor-ns-resize group select-none"
+        onMouseDown={handleResizeStart}
+      >
+        <div className="w-8 h-1 rounded-full bg-surface-border group-hover:bg-tines/40 transition-colors" />
+      </div>
+
       {/* Input area */}
-      <div className="px-4 py-3">
+      <div className="px-4 pb-3">
         <div className="flex items-end gap-2">
           <textarea
             ref={inputRef}
@@ -129,7 +161,7 @@ export default function SAFollowUpChat({ tool, dealName, context, placeholder }:
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder ?? `Ask a follow-up about this ${tool}...`}
-            rows={1}
+            style={{ height: inputHeight }}
             className="flex-1 resize-none rounded-lg border border-surface-border bg-surface-raised px-3 py-2
                        text-sm text-white placeholder-tines-dim focus:outline-none focus:border-tines/40
                        transition-colors"
