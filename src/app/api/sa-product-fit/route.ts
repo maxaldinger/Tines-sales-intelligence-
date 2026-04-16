@@ -12,70 +12,24 @@ Products/Services:
 - Tines Pages: Custom forms and portals for intake, approvals, and self-service
 - AI Actions: LLM-powered steps integrated natively into workflows
 - Tines API: Full REST API for programmatic workflow management
-Key Differentiators: Only security automation platform with true no-code (not low-code), no per-action pricing (unlimited runs), vendor-agnostic integrations (works with any API), SOC2 Type II certified, used by top security teams at Snowflake, Canva, Databricks, Mars, McKesson.
+Key Differentiators: Only security automation platform with true no-code (not low-code), no per-action pricing (unlimited runs), vendor-agnostic integrations, SOC2 Type II certified, used by Snowflake, Canva, Databricks, Mars, McKesson.
 Target Industries: Financial Services, Healthcare, Technology, Government/Defense, Critical Infrastructure
 ICP: Enterprises (1000+ employees) with mature security teams, SIEM/EDR/ITSM tool stacks, and manual triage or response processes
-Competitors: Splunk SOAR (complex, requires scripting), Palo Alto XSOAR (expensive, vendor lock-in), Torq (newer, less proven), Swimlane (complex low-code), ServiceNow SecOps (heavy IT overhead)
-Common Objections: "We already have a SOAR" → Tines replaces legacy SOAR with true no-code and unlimited runs. "Our team can script it" → No-code means non-engineers can build and maintain, reducing key-person risk. "We're evaluating ServiceNow" → Tines is purpose-built for security, not a bolt-on to ITSM.
+Competitors: Splunk SOAR, Palo Alto XSOAR, Torq, Swimlane, ServiceNow SecOps
 == END CONTEXT ==`;
-
-const FIT_CATEGORIES = [
-  {
-    id: 'security_automation',
-    label: 'Security Automation Fit',
-    description: 'How well does the prospect need workflow automation for security ops? Evaluate their need for automated alert triage, incident response playbooks, threat intelligence workflows, and cross-tool orchestration.',
-  },
-  {
-    id: 'alert_fatigue',
-    label: 'Alert Fatigue Impact',
-    description: 'How severe is their alert volume problem? Look for SIEM alert overload, SOC analyst burnout, high false-positive rates, and manual enrichment bottlenecks.',
-  },
-  {
-    id: 'soar_replacement',
-    label: 'SOAR Replacement Value',
-    description: 'Are they using a legacy SOAR that Tines can displace? Evaluate dissatisfaction with Splunk SOAR, Palo Alto XSOAR, Swimlane, or homegrown scripting. Look for complaints about complexity, per-action pricing, or vendor lock-in.',
-  },
-  {
-    id: 'compliance_governance',
-    label: 'Compliance & Governance',
-    description: 'What regulatory requirements does Tines address? Evaluate SOC2, HIPAA, PCI-DSS, GDPR, FedRAMP, CMMC compliance automation needs. Look for audit trail requirements, policy enforcement gaps, and reporting bottlenecks.',
-  },
-  {
-    id: 'soc_scalability',
-    label: 'SOC Scalability',
-    description: 'Would no-code automation help their team scale? Evaluate team size constraints, hiring challenges, analyst turnover, and the gap between alert volume and analyst capacity.',
-  },
-  {
-    id: 'tool_consolidation',
-    label: 'Tool Consolidation',
-    description: 'Can Tines help reduce tool sprawl? Look for excessive security tool stacks, integration challenges, overlapping capabilities, and desire to consolidate vendors.',
-  },
-];
-
-const PRODUCTS = [
-  { id: 'stories', label: 'Tines Stories', description: 'Visual, no-code workflow builder. Automates security playbooks, alert triage, incident response, and cross-tool orchestration.' },
-  { id: 'cases', label: 'Tines Cases', description: 'Built-in case management. Tracks incidents, investigations, and security workflows with full audit trails.' },
-  { id: 'pages', label: 'Tines Pages', description: 'Custom forms and portals. Self-service intake, approval workflows, phishing report buttons, and stakeholder dashboards.' },
-  { id: 'ai_actions', label: 'AI Actions', description: 'LLM-powered workflow steps. AI-driven alert summarization, triage decisions, and natural language automation.' },
-  { id: 'api', label: 'Tines API', description: 'Full REST API. Programmatic workflow management, bulk operations, and CI/CD integration for security-as-code.' },
-];
 
 export async function POST(request: Request) {
   try {
-    const { notes, account, techStack } = await request.json();
+    const body = await request.json();
+    const notes = body.notes || '';
+    const dealName = body.dealName || body.account || '';
     if (!notes?.trim()) {
-      return NextResponse.json({ error: 'Notes or account context are required' }, { status: 400 });
+      return NextResponse.json({ error: 'Notes are required' }, { status: 400 });
     }
 
-    const systemPrompt = `You are a product-fit analyst for Tines, the leading no-code security automation platform. You evaluate how well Tines' products map to a prospect's security operations needs, tech stack, and pain points.
+    const systemPrompt = `You are a product-fit analyst for Tines, the no-code security automation platform. Evaluate how well Tines' products map to a prospect's needs.
 
-${TINES_CONTEXT}
-
-== FIT CATEGORIES ==
-${FIT_CATEGORIES.map(c => `${c.label}: ${c.description}`).join('\n\n')}
-
-== TINES PRODUCTS ==
-${PRODUCTS.map(p => `${p.label}: ${p.description}`).join('\n\n')}`;
+${TINES_CONTEXT}`;
 
     const msg = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
@@ -84,67 +38,55 @@ ${PRODUCTS.map(p => `${p.label}: ${p.description}`).join('\n\n')}`;
       messages: [
         {
           role: 'user',
-          content: `Evaluate the product fit for this prospect across all categories and products.
+          content: `Evaluate product fit for ${dealName || 'this prospect'} from these notes.
 
-Account: ${account || 'Unknown'}
-Tech Stack: ${techStack || 'Not specified'}
-
-Notes and context:
+Notes:
 ${notes}
 
-Return ONLY a JSON object with this exact structure:
+Return ONLY a JSON object with this EXACT structure:
 {
   "overall_score": 0-100,
-  "overall_label": "Excellent Fit|Strong Fit|Moderate Fit|Weak Fit",
-  "overall_color": "green|yellow|orange|red",
-  "summary": "3-4 sentence executive summary of the product fit assessment",
-  "categories": [
-    {
-      "id": "${FIT_CATEGORIES.map(c => c.id).join('|')}",
-      "label": "Category Label",
-      "score": 0-100,
-      "color": "green|yellow|orange|red",
-      "evidence": "What in the notes supports this score",
-      "gaps": "What information is missing or concerning",
-      "recommendation": "Specific action to improve fit or validate further"
-    }
-  ],
+  "overall_label": "Excellent Fit" | "Strong Fit" | "Moderate Fit" | "Weak Fit",
+  "overall_summary": "2-3 sentence executive summary",
   "products": [
     {
-      "id": "${PRODUCTS.map(p => p.id).join('|')}",
-      "label": "Product Name",
-      "relevance": "high|medium|low|none",
-      "use_cases": ["Specific use case for this customer"],
-      "value_statement": "One sentence on the value this product delivers for them",
-      "demo_talking_point": "Key point to highlight in a demo"
+      "product": "Tines Stories",
+      "score": 0-100,
+      "fit_label": "Strong" | "Moderate" | "Weak",
+      "reasoning": "1-2 sentence why",
+      "evidence": ["short evidence phrase 1", "short evidence phrase 2"]
     }
   ],
-  "competitive_landscape": {
-    "current_tools": ["Tools they currently use based on the notes"],
-    "displacement_opportunity": "Which existing tools Tines could replace and why",
-    "competitive_threats": ["Competitors likely in the deal and their positioning"]
-  },
-  "recommended_use_cases": [
+  "discovery_gaps": [
     {
-      "use_case": "Specific automation use case",
-      "products_involved": ["Tines Stories", "Tines Cases"],
-      "estimated_impact": "Quantified or qualified impact statement",
-      "priority": "high|medium|low"
+      "area": "Budget" | "Decision Process" | "Timeline" | "Technical" | "Stakeholders",
+      "question": "Question to ask to close this gap",
+      "why_important": "1 sentence why this matters"
     }
   ],
-  "discovery_questions": [
-    "Question to ask to further validate fit"
+  "red_flags": [
+    {
+      "flag": "Short flag name",
+      "severity": "high" | "medium" | "low",
+      "detail": "1 sentence detail"
+    }
+  ],
+  "not_a_fit": [
+    {
+      "product": "Product Name",
+      "reason": "1 sentence why not"
+    }
   ]
 }
 
 Rules:
-- Score each category: green=80-100 (strong evidence of need), yellow=60-79 (moderate signals), orange=40-59 (some potential), red=0-39 (weak fit).
-- Overall score is weighted average favoring Security Automation Fit and Alert Fatigue Impact.
-- Include all 6 categories and all 5 products.
-- Include 3-5 recommended use cases ordered by priority.
-- Include 4-6 discovery questions to validate remaining gaps.
-- Be specific to what's in the notes — don't fabricate evidence.
-- Return ONLY the JSON object.`,
+- Include all 5 Tines products (Stories, Cases, Pages, AI Actions, API) in "products"
+- 3-5 discovery_gaps ordered by importance
+- Include red_flags only if present (can be empty array)
+- Include not_a_fit only if present (can be empty array)
+- Keep "reasoning" and "detail" fields SHORT (1-2 sentences max) to avoid truncation
+- Evidence phrases should be 3-6 words each
+- Return ONLY the JSON object. No markdown, no commentary.`,
         },
       ],
     });
@@ -159,14 +101,12 @@ Rules:
       if (objStart >= 0) json = json.slice(objStart);
     }
 
-    let result;
+    let results;
     try {
-      result = JSON.parse(json);
+      results = JSON.parse(json);
     } catch {
-      // Claude hit max_tokens mid-string — salvage by closing the open string,
-      // then closing any open arrays/objects based on bracket depth.
+      // Repair truncated JSON: close open strings + open brackets
       let repaired = json;
-      // Count unescaped double-quotes; if odd, close the string.
       let inStr = false;
       let esc = false;
       for (let i = 0; i < repaired.length; i++) {
@@ -176,7 +116,6 @@ Rules:
         if (ch === '"') inStr = !inStr;
       }
       if (inStr) repaired += '"';
-      // Close open brackets/braces in reverse order.
       const stack: string[] = [];
       inStr = false;
       esc = false;
@@ -190,16 +129,38 @@ Rules:
         else if (ch === '}' && stack[stack.length - 1] === '{') stack.pop();
         else if (ch === ']' && stack[stack.length - 1] === '[') stack.pop();
       }
-      // Strip dangling trailing comma before closing.
       repaired = repaired.replace(/,\s*$/, '');
       while (stack.length) {
         const open = stack.pop();
         repaired += open === '{' ? '}' : ']';
       }
-      result = JSON.parse(repaired);
-      result._truncated = true;
+      try {
+        results = JSON.parse(repaired);
+      } catch {
+        // Last resort: return a minimal valid shape so the UI renders
+        results = {
+          overall_score: 0,
+          overall_label: 'Analysis Incomplete',
+          overall_summary: 'The analysis was truncated. Please try again with shorter notes or paste the key excerpts only.',
+          products: [],
+          discovery_gaps: [],
+          red_flags: [],
+          not_a_fit: [],
+          _truncated: true,
+        };
+      }
     }
-    return NextResponse.json(result);
+
+    // Ensure required arrays exist so builder doesn't crash on `.length`
+    results.products = results.products || [];
+    results.discovery_gaps = results.discovery_gaps || [];
+    results.red_flags = results.red_flags || [];
+    results.not_a_fit = results.not_a_fit || [];
+    results.overall_score = results.overall_score ?? 0;
+    results.overall_label = results.overall_label || 'Unknown';
+    results.overall_summary = results.overall_summary || '';
+
+    return NextResponse.json({ results });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : 'Internal server error';
     return NextResponse.json({ error: errMsg }, { status: 500 });

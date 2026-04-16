@@ -409,7 +409,7 @@ export default function SaProposalBuilder({ dealName }: Props) {
 
           {/* Follow-up chat */}
           <FollowUpChat
-            contextSummary={JSON.stringify(proposal)}
+            context={JSON.stringify(proposal)}
             tool="proposal"
             dealName={dealName}
           />

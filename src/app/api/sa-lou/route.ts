@@ -21,7 +21,10 @@ Common Objections: "We already have a SOAR" → Tines replaces legacy SOAR with 
 
 export async function POST(request: Request) {
   try {
-    const { notes, account, attendees } = await request.json();
+    const body = await request.json();
+    const notes = body.notes || body.transcript || '';
+    const account = body.account || body.dealName || '';
+    const attendees = body.attendees || '';
     if (!notes?.trim()) {
       return NextResponse.json({ error: 'Call notes are required' }, { status: 400 });
     }
@@ -41,7 +44,7 @@ Categories for LOU rows:
 
     const msg = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 3000,
+      max_tokens: 6000,
       system: systemPrompt,
       messages: [
         {

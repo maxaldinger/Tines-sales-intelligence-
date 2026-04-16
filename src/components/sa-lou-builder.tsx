@@ -313,7 +313,7 @@ export default function SaLouBuilder({ dealName }: Props) {
 
           {/* Follow-up chat */}
           <FollowUpChat
-            contextSummary={JSON.stringify(rows)}
+            context={JSON.stringify(rows)}
             tool="lou"
             dealName={dealName}
           />

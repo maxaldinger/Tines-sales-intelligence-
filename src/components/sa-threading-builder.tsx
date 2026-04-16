@@ -374,7 +374,7 @@ export default function SaThreadingBuilder({ dealName }: Props) {
 
           {/* Follow-up chat */}
           <FollowUpChat
-            contextSummary={JSON.stringify(analysis)}
+            context={JSON.stringify(analysis)}
             tool="threading"
             dealName={dealName}
           />

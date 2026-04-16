@@ -268,7 +268,7 @@ export default function SaProductFitBuilder({ dealName }: Props) {
 
           {/* Follow-up chat */}
           <FollowUpChat
-            contextSummary={JSON.stringify(results)}
+            context={JSON.stringify(results)}
             tool="product-fit"
             dealName={dealName}
           />
