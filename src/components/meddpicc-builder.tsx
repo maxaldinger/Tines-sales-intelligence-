@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Target, Sparkles, RefreshCw, Users, ArrowRight, FileText, AlertTriangle, CheckCircle } from 'lucide-react'
+import SaDealPicker from './sa-deal-picker'
 
 interface MeddpiccField {
   letter: string
@@ -71,6 +72,15 @@ export default function MeddpiccBuilder() {
 
       {/* Input */}
       <div className="space-y-4">
+        <div className="flex items-center gap-3 flex-wrap">
+          <SaDealPicker
+            label={account ? `Change account (${account})` : 'Pull from Signal Feed'}
+            onPick={(seed, name) => { setNotes(seed); setAccount(name) }}
+          />
+          {account && (
+            <span className="text-xs text-tines-muted">Seeded from <span className="text-tines">{account}</span></span>
+          )}
+        </div>
         <input
           type="text"
           value={account}
@@ -81,7 +91,7 @@ export default function MeddpiccBuilder() {
         <textarea
           value={notes}
           onChange={e => setNotes(e.target.value)}
-          placeholder="Paste raw call notes, meeting transcripts, or email threads here..."
+          placeholder="Paste raw call notes, meeting transcripts, or email threads here — or pull from Signal Feed above..."
           rows={10}
           className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
         />

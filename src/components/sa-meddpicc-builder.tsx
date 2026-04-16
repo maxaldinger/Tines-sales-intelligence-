@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Target, Sparkles, RefreshCw, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react'
 import FollowUpChat from './sa-follow-up-chat'
+import SaDealPicker from './sa-deal-picker'
 
 /* ── Types ──────────────────────────────────────────────── */
 
@@ -144,13 +145,17 @@ export default function SaMeddpiccBuilder({ dealName }: Props) {
 
       {/* Notes input — always visible */}
       <div className="space-y-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <SaDealPicker
+            label={account ? `Change account (${account})` : 'Pull from Signal Feed'}
+            onPick={(seed, name) => { setNotesForAi(seed); setAccount(name) }}
+          />
           <input
             type="text"
             value={account}
             onChange={e => setAccount(e.target.value)}
             placeholder="Account name (e.g. Cloudflare)"
-            className="flex-1 px-4 py-2.5 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-slate-500 focus:outline-none focus:border-tines/50 text-sm"
+            className="flex-1 min-w-[200px] px-4 py-2.5 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-slate-500 focus:outline-none focus:border-tines/50 text-sm"
           />
           <button
             onClick={copyScorecard}

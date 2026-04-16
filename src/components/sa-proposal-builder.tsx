@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { FileText, Sparkles, RefreshCw, Copy, Pencil, Check } from 'lucide-react'
 import FollowUpChat from './sa-follow-up-chat'
+import SaDealPicker from './sa-deal-picker'
 
 interface BusinessChallenge {
   challenge: string
@@ -29,10 +30,11 @@ interface Props {
   dealName: string | null
 }
 
-export default function SaProposalBuilder({ dealName }: Props) {
+export default function SaProposalBuilder({ dealName: initialDealName }: Props) {
   const [mode, setMode] = useState<'input' | 'proposal'>('input')
   const [notes, setNotes] = useState('')
   const [products, setProducts] = useState('')
+  const [dealName, setDealName] = useState<string | null>(initialDealName ?? null)
   const [proposal, setProposal] = useState<Proposal | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -123,12 +125,21 @@ export default function SaProposalBuilder({ dealName }: Props) {
 
       {mode === 'input' && (
         <div className="space-y-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            <SaDealPicker
+              label={dealName ? `Change account (${dealName})` : 'Pull from Signal Feed'}
+              onPick={(seed, name) => { setNotes(seed); setDealName(name) }}
+            />
+            {dealName && (
+              <span className="text-xs text-tines-muted">Seeded from <span className="text-tines">{dealName}</span></span>
+            )}
+          </div>
           <div>
             <label className="block text-sm font-medium text-[#C8C0E0] mb-1.5">Meeting Notes / Context</label>
             <textarea
               value={notes}
               onChange={e => setNotes(e.target.value)}
-              placeholder="Paste meeting notes, key requirements, pain points discussed..."
+              placeholder="Paste meeting notes, key requirements, pain points discussed — or pull from Signal Feed above..."
               rows={10}
               className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
             />

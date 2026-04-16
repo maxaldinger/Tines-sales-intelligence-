@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Package, Sparkles, RefreshCw, AlertTriangle, XCircle, CheckCircle, HelpCircle } from 'lucide-react'
 import FollowUpChat from './sa-follow-up-chat'
+import SaDealPicker from './sa-deal-picker'
 
 interface ProductFit {
   product: string
@@ -60,9 +61,10 @@ function severityStyle(severity: string) {
   }
 }
 
-export default function SaProductFitBuilder({ dealName }: Props) {
+export default function SaProductFitBuilder({ dealName: initialDealName }: Props) {
   const [mode, setMode] = useState<'input' | 'results'>('input')
   const [notes, setNotes] = useState('')
+  const [dealName, setDealName] = useState<string | null>(initialDealName ?? null)
   const [results, setResults] = useState<FitResults | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -101,10 +103,19 @@ export default function SaProductFitBuilder({ dealName }: Props) {
 
       {mode === 'input' && (
         <div className="space-y-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            <SaDealPicker
+              label={dealName ? `Change account (${dealName})` : 'Pull from Signal Feed'}
+              onPick={(seed, name) => { setNotes(seed); setDealName(name) }}
+            />
+            {dealName && (
+              <span className="text-xs text-tines-muted">Seeded from <span className="text-tines">{dealName}</span></span>
+            )}
+          </div>
           <textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
-            placeholder="Paste meeting notes, requirements, pain points, or discovery call details..."
+            placeholder="Paste meeting notes, requirements, pain points, or discovery call details — or pull from Signal Feed above..."
             rows={12}
             className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
           />

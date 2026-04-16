@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Radio, MessageSquare, Map, Network, Shield, ShieldCheck } from 'lucide-react'
+import { Radio, MessageSquare, Map, Network, Shield, ShieldCheck, Target } from 'lucide-react'
 import SignalFeed from '@/components/signal-feed'
 import SalesAssist from '@/components/sales-assist'
 import TerritoryPlan from '@/components/territory-plan'
 import KnowledgeGraph from '@/components/knowledge-graph'
+import MeddpiccBuilder from '@/components/meddpicc-builder'
 
 /* ── Inline Tines logo mark (no external dependency) ── */
 function TinesLogo() {
@@ -23,6 +24,7 @@ function TinesLogo() {
 const TABS = [
   { id: 'signals', label: 'Signal Feed', Icon: Radio },
   { id: 'sales-assist', label: 'Sales Assist', Icon: MessageSquare },
+  { id: 'meddpicc', label: 'MEDDPICC', Icon: Target },
   { id: 'territory', label: 'Territory Plan', Icon: Map },
 ]
 
@@ -112,6 +114,7 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {tab === 'signals' && <SignalFeed />}
         {tab === 'sales-assist' && <SalesAssist />}
+        {tab === 'meddpicc' && <MeddpiccBuilder />}
         {tab === 'territory' && <TerritoryPlan />}
         {tab === 'graph' && admin && <KnowledgeGraph />}
       </main>

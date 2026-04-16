@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Presentation, Sparkles, RefreshCw, Copy, Check, ChevronDown, ChevronUp, StickyNote } from 'lucide-react'
+import SaDealPicker from './sa-deal-picker'
 
 interface Slide {
   title: string
@@ -21,10 +22,11 @@ interface Props {
   dealName: string | null
 }
 
-export default function SaDeckBuilder({ dealName }: Props) {
+export default function SaDeckBuilder({ dealName: initialDealName }: Props) {
   const [mode, setMode] = useState<'input' | 'slides'>('input')
   const [deckType, setDeckType] = useState('prospect')
   const [notes, setNotes] = useState('')
+  const [dealName, setDealName] = useState<string | null>(initialDealName ?? null)
   const [slides, setSlides] = useState<Slide[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -138,14 +140,23 @@ Format: [{"title":"...","content":"...","speaker_notes":"..."}]`
           </div>
 
           {/* Notes */}
-          <div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-3 flex-wrap">
+              <SaDealPicker
+                label={dealName ? `Change account (${dealName})` : 'Pull from Signal Feed'}
+                onPick={(seed, name) => { setNotes(seed); setDealName(name) }}
+              />
+              {dealName && (
+                <span className="text-xs text-tines-muted">Seeded from <span className="text-tines">{dealName}</span></span>
+              )}
+            </div>
             <label className="block text-sm font-medium text-[#C8C0E0] mb-1.5">
               Context & Notes (optional)
             </label>
             <textarea
               value={notes}
               onChange={e => setNotes(e.target.value)}
-              placeholder="Add any context: company details, pain points discussed, key stakeholders, industry..."
+              placeholder="Add any context: company details, pain points discussed, key stakeholders, industry — or pull from Signal Feed above..."
               rows={6}
               className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
             />

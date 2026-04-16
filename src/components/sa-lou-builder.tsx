@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { FileText, Sparkles, RefreshCw, Plus, Trash2, Pencil, Check, X, Download } from 'lucide-react'
 import FollowUpChat from './sa-follow-up-chat'
+import SaDealPicker from './sa-deal-picker'
 
 interface LouRow {
   id: string
@@ -21,9 +22,10 @@ interface Props {
   dealName: string | null
 }
 
-export default function SaLouBuilder({ dealName }: Props) {
+export default function SaLouBuilder({ dealName: initialDealName }: Props) {
   const [mode, setMode] = useState<'input' | 'table'>('input')
   const [transcript, setTranscript] = useState('')
+  const [dealName, setDealName] = useState<string | null>(initialDealName ?? null)
   const [rows, setRows] = useState<LouRow[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -136,10 +138,19 @@ export default function SaLouBuilder({ dealName }: Props) {
 
       {mode === 'input' && (
         <div className="space-y-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            <SaDealPicker
+              label={dealName ? `Change account (${dealName})` : 'Pull from Signal Feed'}
+              onPick={(seed, name) => { setTranscript(seed); setDealName(name) }}
+            />
+            {dealName && (
+              <span className="text-xs text-tines-muted">Seeded from <span className="text-tines">{dealName}</span></span>
+            )}
+          </div>
           <textarea
             value={transcript}
             onChange={e => setTranscript(e.target.value)}
-            placeholder="Paste meeting notes, call transcript, or key discussion points..."
+            placeholder="Paste meeting notes, call transcript, or key discussion points — or pull from Signal Feed above..."
             rows={12}
             className="w-full px-4 py-3 rounded-xl bg-surface-raised border border-surface-border text-white placeholder-tines-dim focus:outline-none focus:border-tines/40 text-sm resize-none leading-relaxed"
           />
