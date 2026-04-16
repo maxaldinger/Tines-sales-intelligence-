@@ -79,7 +79,7 @@ ${PRODUCTS.map(p => `${p.label}: ${p.description}`).join('\n\n')}`;
 
     const msg = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4000,
+      max_tokens: 8000,
       system: systemPrompt,
       messages: [
         {
@@ -159,7 +159,46 @@ Rules:
       if (objStart >= 0) json = json.slice(objStart);
     }
 
-    const result = JSON.parse(json);
+    let result;
+    try {
+      result = JSON.parse(json);
+    } catch {
+      // Claude hit max_tokens mid-string — salvage by closing the open string,
+      // then closing any open arrays/objects based on bracket depth.
+      let repaired = json;
+      // Count unescaped double-quotes; if odd, close the string.
+      let inStr = false;
+      let esc = false;
+      for (let i = 0; i < repaired.length; i++) {
+        const ch = repaired[i];
+        if (esc) { esc = false; continue; }
+        if (ch === '\\') { esc = true; continue; }
+        if (ch === '"') inStr = !inStr;
+      }
+      if (inStr) repaired += '"';
+      // Close open brackets/braces in reverse order.
+      const stack: string[] = [];
+      inStr = false;
+      esc = false;
+      for (let i = 0; i < repaired.length; i++) {
+        const ch = repaired[i];
+        if (esc) { esc = false; continue; }
+        if (ch === '\\') { esc = true; continue; }
+        if (ch === '"') { inStr = !inStr; continue; }
+        if (inStr) continue;
+        if (ch === '{' || ch === '[') stack.push(ch);
+        else if (ch === '}' && stack[stack.length - 1] === '{') stack.pop();
+        else if (ch === ']' && stack[stack.length - 1] === '[') stack.pop();
+      }
+      // Strip dangling trailing comma before closing.
+      repaired = repaired.replace(/,\s*$/, '');
+      while (stack.length) {
+        const open = stack.pop();
+        repaired += open === '{' ? '}' : ']';
+      }
+      result = JSON.parse(repaired);
+      result._truncated = true;
+    }
     return NextResponse.json(result);
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : 'Internal server error';
